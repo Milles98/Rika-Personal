@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./assets/css/main.css";
 
 import Home from "./views/Home";
+import ProductEdit from "./views/admin/ProductEdit";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -12,6 +13,7 @@ createRoot(document.getElementById("root")).render(
       <div>
         <Routes>
           <Route path="" element={<Home />} />
+          <Route path="/admin/edit-product" element={<ProductEdit />} />
         </Routes>
       </div>
     </BrowserRouter>

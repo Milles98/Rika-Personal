@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import InputField from '../sections/InputField.jsx'
+import SelectField from '../sections/SelectField.jsx';
 
 const ProductEdit = () => {
+    const { id } = useParams();
+    const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         id: '',
         name: '',
@@ -13,22 +18,25 @@ const ProductEdit = () => {
         size: '',
     });
 
-    const [errors, setErrors] = useState({});
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const response = await fetch(`url/api/products/${id}`);
+            const data = await response.json();
+            setFormData(data);
+        };
 
-    const categories = [
-        'T-Shirt',
-        'Underwear',
-        'Pants',
-    ];
+        fetchProduct();
+    }, [id]);
 
-    const sizes = [
-        'XS',
-        'S',
-        'M',
-        'L',
-        'XL',
-    ];
+    const categories = ['T-Shirt', 'Underwear', 'Pants'];
+    const sizes = ['XS', 'S', 'M', 'L', 'XL'];
 
+    const isValidImageURL = (url) => {
+        const onlineImagePattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg))$/i;
+        const standaloneImagePattern = /^(?=.{1,})(?:.*[\\\/])?.+\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg)$/i;
+    
+        return onlineImagePattern.test(url) || standaloneImagePattern.test(url);
+    };
     const validate = () => {
         const errors = {};
         if (!formData.name) errors.name = "Product Name is required.";
@@ -37,9 +45,11 @@ const ProductEdit = () => {
         if (isNaN(formData.price) || formData.price <= 0) errors.price = "Price must be a positive number.";
         if (!formData.stock) errors.stock = "Stock is required.";
         if (isNaN(formData.stock) || formData.stock < 0) errors.stock = "Stock cannot be negative.";
-        if (!formData.image) errors.image = "Image is required.";
-        // if (!formData.category) errors.category = "Category is required."
-        // if (!formData.size) errors.size = "Size is required";
+        if (!formData.image) {
+            errors.image = "Image URL is required.";
+        } else if (!isValidImageURL(formData.image)) {
+            errors.image = "Image URL must be a valid image format (JPEG, PNG, GIF, etc.).";
+        }
         return errors;
     };
 
@@ -50,13 +60,12 @@ const ProductEdit = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Validate first
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
             console.log("Form submitted", formData);
-            // Call API if no errors
+            // Call API to update product
         }
     };
 
@@ -65,31 +74,21 @@ const ProductEdit = () => {
             <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-96">
                 <h2 className="text-2xl mb-6 text-center text-gray-800">Edit Product</h2>
                 {/* Product Name */}
-                <div className="mb-4">
-                    <label className="block text-gray-700">Product Name*</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded w-full"
-                        placeholder="Product Name"
-                    />
-                    {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
-                </div>
+                <InputField
+                    label="Product Name*"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    error={errors.name}
+                />
                 {/* Product Title */}
-                <div className="mb-4">
-                    <label className="block text-gray-700">Title*</label>
-                    <input
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded w-full"
-                        placeholder="Product Title"
-                    />
-                    {errors.title && <p className="text-red-600 text-sm">{errors.title}</p>}
-                </div>
+                <InputField
+                    label="Title*"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    error={errors.title}
+                />
                 {/* Product Description */}
                 <div className="mb-4">
                     <label className="block text-gray-700">Description</label>
@@ -103,80 +102,47 @@ const ProductEdit = () => {
                     />
                 </div>
                 {/* Product Price */}
-                <div className="mb-4">
-                    <label className="block text-gray-700">Price (SEK)*</label>
-                    <input
-                        type="number"
-                        name="price"
-                        value={formData.price}
-                        onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded w-full"
-                        placeholder="Product Price"
-                    />
-                    {errors.price && <p className="text-red-600 text-sm">{errors.price}</p>}
-                </div>
+                <InputField
+                    label="Price (SEK)*"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleChange}
+                    type="number"
+                    error={errors.price}
+                />
                 {/* Product Category */}
-                <div className="mb-4">
-                    <label className="block text-gray-700">Category</label>
-                    <select
-                        name="category"
-                        value={formData.category}
-                        onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded w-full"
-                    >
-                        <option value="">Select a category</option>
-                        {categories.map((category) => (
-                            <option key={category} value={category}>
-                                {category}
-                            </option>
-                        ))}
-                    </select>
-                    {errors.category && <p className="text-red-600 text-sm">{errors.category}</p>}
-                </div>
+                <SelectField
+                    label="Category"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    options={categories}
+                />
                 {/* Product Size */}
-                <div className="mb-4">
-                    <label className="block text-gray-700">Size</label>
-                    <select
-                        name="size"
-                        value={formData.size}
-                        onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded w-full"
-                    >
-                        <option value="">Select a size</option>
-                        {sizes.map((size) => (
-                            <option key={size} value={size}>
-                                {size}
-                            </option>
-                        ))}
-                    </select>
-                    {/* {errors.size && <p className="text-red-600 text-sm">{errors.size}</p>} */}
-                </div>
+                <SelectField
+                    label="Size"
+                    name="size"
+                    value={formData.size}
+                    onChange={handleChange}
+                    options={sizes}
+                />
                 {/* Image URL */}
-                <div className="mb-4">
-                    <label className="block text-gray-700">Image URL*</label>
-                    <input
-                        type="text"
-                        name="image"
-                        value={formData.image}
-                        onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded w-full"
-                        placeholder="Image URL"
-                    />
-                    {errors.image && <p className="text-red-600 text-sm">{errors.image}</p>}
-                </div>
+                <InputField
+                    label="Image URL*"
+                    name="image"
+                    value={formData.image}
+                    onChange={handleChange}
+                    error={errors.image}
+                />
                 {/* Product Stock */}
-                <div className="mb-4">
-                    <label className="block text-gray-700">Stock*</label>
-                    <input
-                        type="number"
-                        name="stock"
-                        value={formData.stock}
-                        onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded w-full"
-                        placeholder="Product Stock"
-                    />
-                    {/* {errors.stock && <p className="text-red-600 text-sm">{errors.stock}</p>} */}
-                </div>
+                <InputField
+                    label="Stock*"
+                    name="stock"
+                    value={formData.stock}
+                    onChange={handleChange}
+                    type="number"
+                    error={errors.stock}
+                />
                 {/* Submit Button */}
                 <button
                     type="submit"

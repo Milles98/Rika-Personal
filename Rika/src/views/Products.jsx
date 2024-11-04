@@ -1,27 +1,22 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import { useFetchProducts } from "../lib/fetchProducts";
+
 import ArrowBack from "../common/ArrowBack";
 import ProductCard from "./sections/products/ProductCard";
 import SearchIcon from "../assets/icons/SearchIcon";
 
 const Products = () => {
-  const productList = [
-    {
-      id: 1,
-      model: "Vado Odelle Dress",
-      price: 20,
-      brand: "Roller Rabbit",
-      image:
-        "https://cdn.sanity.io/images/u8zg7cll/production/f6ac780b53f53742b19224aa2e38b592c3365901-2500x2500.svg",
-    },
-    {
-      id: 2,
-      model: "William Gross Dress",
-      price: 30,
-      brand: "Pundish",
-      image:
-        "https://www.gross.nu/assets/images/misc/about-me-portrait-placeholder.png",
-    },
-  ];
+  const { getData } = useFetchProducts();
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const data = await getData();
+      setProducts(data);
+    };
+
+    getProducts();
+  }, [getData]);
 
   return (
     <section className="flex flex-col gap-4 px-4 py-8">
@@ -34,7 +29,7 @@ const Products = () => {
           Clothes
         </h1>
         <div className="flex gap-[15px] flex-wrap justify-center mb-[9px]">
-          {productList.map((product) => (
+          {products.map((product) => (
             <ProductCard key={product.id} data={product} />
           ))}
         </div>

@@ -9,9 +9,7 @@ const ArrowBack = ({ goBackTo }) => {
   };
 
   return (
-    <button
-      onClick={handleClick}
-    >
+    <button onClick={handleClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="35"

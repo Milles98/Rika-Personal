@@ -20,7 +20,9 @@ const ProductEdit = () => {
 
     useEffect(() => {
         const fetchProduct = async () => {
-            const response = await fetch(`https://productsreadall20241104171638.azurewebsites.net/Products`); // TODO: Fetch product info so that it fills the form
+            // Fetch first product from database
+            // TODO: Fetch product based on ID from URL parameters.
+            const response = await fetch(`https://productsreadall20241104171638.azurewebsites.net/Products`);
             const data = await response.json();
 
             const firstData = Array.isArray(data) ? data[0] : data;
@@ -58,16 +60,37 @@ const ProductEdit = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        if (errors[name]) {
+            setErrors({ ...errors, [name]: undefined })
+        }
     };
     // Handle validation and API call when updating
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
-            console.log("Form submitted", formData);
-            // TODO: Call API to update product
+            console.log(formData)
+            try {
+                // const response = await fetch(`url/${id}`, {
+                //     method: 'PUT',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify(formData),
+                // });
+
+                if (response.ok) {
+                    console.log("Product updated successfully");
+                } else {
+                    console.error("Error updating product:", response.statusText);
+                    // Handle errors if needed, e.g., by setting an error message in state
+                }
+            } catch (error) {
+                console.error("Error submitting form:", error);
+            }
         }
     };
 

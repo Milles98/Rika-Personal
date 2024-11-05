@@ -6,7 +6,7 @@ const InputField = ({ label, name, value, onChange, type = 'text', error }) => (
         <input
             type={type}
             name={name}
-            value={value}
+            value={value || ''}
             onChange={onChange}
             className="mt-1 p-2 sm:p-3 border border-gray-300 rounded w-full text-sm sm:text-base"
             placeholder={label}

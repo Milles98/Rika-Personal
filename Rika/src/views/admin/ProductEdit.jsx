@@ -21,7 +21,7 @@ const ProductEdit = () => {
 
     useEffect(() => {
         const fetchProduct = async () => {
-            const response = await fetch(`url/api/products/${id}`);
+            const response = await fetch(`url/api/products/${id}`); // TODO: Fetch product info so that it fills the form
             const data = await response.json();
             setFormData(data);
         };
@@ -31,17 +31,17 @@ const ProductEdit = () => {
 
     const categories = ['T-Shirt', 'Underwear', 'Pants'];
     const sizes = ['XS', 'S', 'M', 'L', 'XL'];
-
+    // Validate image url
     const isValidImageURL = (url) => {
         const onlineImagePattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg))$/i;
         const standaloneImagePattern = /^(?=.{1,})(?:.*[\\\/])?.+\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg)$/i;
 
         return onlineImagePattern.test(url) || standaloneImagePattern.test(url);
     };
+    // Validation for the required fields.
     const validate = () => {
         const errors = {};
         if (!formData.brand) errors.brand = "Brand is required.";
-        if (!formData.model) errors.model = "Model is required.";
         if (!formData.price) errors.price = "Price is required.";
         if (isNaN(formData.price) || formData.price <= 0) errors.price = "Price must be a positive number.";
         if (!formData.stock) errors.stock = "Stock is required.";
@@ -53,12 +53,12 @@ const ProductEdit = () => {
         }
         return errors;
     };
-
+    // Change Form Data values when changing fields
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-
+    // Handle validation and API call when updating
     const handleSubmit = (e) => {
         e.preventDefault();
         const validationErrors = validate();
@@ -66,7 +66,7 @@ const ProductEdit = () => {
             setErrors(validationErrors);
         } else {
             console.log("Form submitted", formData);
-            // Call API to update product
+            // TODO: Call API to update product
         }
     };
 
@@ -76,7 +76,7 @@ const ProductEdit = () => {
                 <div className="flex items-center justify-between mb-6">
                     <ArrowBack goBackTo="/" />
                     <h2 className="text-xl sm:text-2xl text-center flex-grow text-gray-800">Edit Product</h2>
-                    <div className="w-8"></div>
+                    <div className="sm:w-6"></div>
                 </div>
                 {/* Brand */}
                 <InputField
@@ -88,11 +88,10 @@ const ProductEdit = () => {
                 />
                 {/* Model */}
                 <InputField
-                    label="Model*"
+                    label="Model"
                     name="title"
                     value={formData.model}
                     onChange={handleChange}
-                    error={errors.model}
                 />
                 {/* Product Description */}
                 <div className="mb-4">

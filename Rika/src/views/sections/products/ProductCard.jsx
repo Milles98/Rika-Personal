@@ -28,7 +28,7 @@ const ProductCard = ({ data }) => {
   return (
     <article className="flex flex-col items-center justify-center gap-2 relative cursor-pointer">
       <img
-        className="w-[155px] h-[177px] filter rounded-2xl"
+        className="w-[155px] h-[177px] filter rounded-2xl object-cover"
         src={imageSrc}
         alt={model}
         onError={handleBrokenImage}

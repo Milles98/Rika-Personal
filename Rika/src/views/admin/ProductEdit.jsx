@@ -8,7 +8,6 @@ const ProductEdit = () => {
     const { id } = useParams();
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
-        id: '',
         brand: '',
         model: '',
         description: '',
@@ -21,9 +20,11 @@ const ProductEdit = () => {
 
     useEffect(() => {
         const fetchProduct = async () => {
-            const response = await fetch(`url/api/products/${id}`); // TODO: Fetch product info so that it fills the form
+            const response = await fetch(`https://productsreadall20241104171638.azurewebsites.net/Products`); // TODO: Fetch product info so that it fills the form
             const data = await response.json();
-            setFormData(data);
+
+            const firstData = Array.isArray(data) ? data[0] : data;
+            setFormData(firstData);
         };
 
         fetchProduct();
@@ -81,7 +82,7 @@ const ProductEdit = () => {
                 {/* Brand */}
                 <InputField
                     label="Brand*"
-                    name="name"
+                    name="brand"
                     value={formData.brand}
                     onChange={handleChange}
                     error={errors.brand}
@@ -89,7 +90,7 @@ const ProductEdit = () => {
                 {/* Model */}
                 <InputField
                     label="Model"
-                    name="title"
+                    name="model"
                     value={formData.model}
                     onChange={handleChange}
                 />

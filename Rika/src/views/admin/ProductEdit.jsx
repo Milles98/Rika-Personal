@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import InputField from '../sections/InputField.jsx'
 import SelectField from '../sections/SelectField.jsx';
+import ArrowBack from '../../common/ArrowBack.jsx';
 
 const ProductEdit = () => {
     const { id } = useParams();
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         id: '',
-        name: '',
-        title: '',
+        brand: '',
+        model: '',
         description: '',
         price: '',
         category: '',
@@ -34,13 +35,13 @@ const ProductEdit = () => {
     const isValidImageURL = (url) => {
         const onlineImagePattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg))$/i;
         const standaloneImagePattern = /^(?=.{1,})(?:.*[\\\/])?.+\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg)$/i;
-    
+
         return onlineImagePattern.test(url) || standaloneImagePattern.test(url);
     };
     const validate = () => {
         const errors = {};
-        if (!formData.name) errors.name = "Product Name is required.";
-        if (!formData.title) errors.title = "Title is required.";
+        if (!formData.brand) errors.brand = "Brand is required.";
+        if (!formData.model) errors.model = "Model is required.";
         if (!formData.price) errors.price = "Price is required.";
         if (isNaN(formData.price) || formData.price <= 0) errors.price = "Price must be a positive number.";
         if (!formData.stock) errors.stock = "Stock is required.";
@@ -70,24 +71,28 @@ const ProductEdit = () => {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-300">
-            <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-96">
-                <h2 className="text-2xl mb-6 text-center text-gray-800">Edit Product</h2>
-                {/* Product Name */}
+        <div className="flex items-center justify-center min-h-screen bg-gray-300 p-4">
+            <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md w-full sm:w-96 md:w-2/3 lg:w-1/2 xl:w-1/3">
+                <div className="flex items-center justify-between mb-6">
+                    <ArrowBack goBackTo="/" />
+                    <h2 className="text-xl sm:text-2xl text-center flex-grow text-gray-800">Edit Product</h2>
+                    <div className="w-8"></div>
+                </div>
+                {/* Brand */}
                 <InputField
-                    label="Product Name*"
+                    label="Brand*"
                     name="name"
-                    value={formData.name}
+                    value={formData.brand}
                     onChange={handleChange}
-                    error={errors.name}
+                    error={errors.brand}
                 />
-                {/* Product Title */}
+                {/* Model */}
                 <InputField
-                    label="Title*"
+                    label="Model*"
                     name="title"
-                    value={formData.title}
+                    value={formData.model}
                     onChange={handleChange}
-                    error={errors.title}
+                    error={errors.model}
                 />
                 {/* Product Description */}
                 <div className="mb-4">
@@ -96,7 +101,7 @@ const ProductEdit = () => {
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded w-full"
+                        className="mt-1 p-2 border border-gray-300 rounded w-full resize-none"
                         placeholder="Product Description"
                         rows="3"
                     />
@@ -146,7 +151,7 @@ const ProductEdit = () => {
                 {/* Submit Button */}
                 <button
                     type="submit"
-                    className="w-full bg-black text-white p-2 rounded hover:bg-gray-800"
+                    className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
                 >
                     Update Product
                 </button>

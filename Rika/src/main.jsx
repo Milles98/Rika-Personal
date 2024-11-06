@@ -8,13 +8,16 @@ import "./assets/css/main.css";
 
 import Home from "./views/Home";
 import Products from "./views/Products";
+import Header from "./views/sections/header/Header";
 import ProductDetails from "./views/ProductDetails";
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <FetchProductsProvider>
-        <div>
+        <Header />
+        <div className="px-4 pt-10 pb-[86px]">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />

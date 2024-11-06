@@ -19,7 +19,7 @@ const Products = () => {
   }, [getData]);
 
   return (
-    <section className="flex flex-col gap-4 px-4 py-8">
+    <section className="flex flex-col gap-4">
       <nav className="flex justify-between">
         <ArrowBack goBackTo="/" />
         <SearchIcon />

@@ -10,7 +10,6 @@ import Home from "./views/Home";
 import Products from "./views/Products";
 import Header from "./views/sections/header/Header";
 import ProductDetails from "./views/ProductDetails";
-import CreateProduct from "./views/CreateProduct";
 import { PostProductProvider } from "./lib/postProducts";
 
 

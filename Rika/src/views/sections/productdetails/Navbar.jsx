@@ -5,16 +5,18 @@ import ShoppingCartIcon from '../../../assets/icons/ShoppingCartIcon'
 const Navbar = () => {
     return (
         <div className='flex'>
-            <div className='flex-grow'>
+            <div className='flex-none'>
                 <button>
                     <ArrowBack />
                 </button>
             </div>
-            <div className='flex-1'>
-                <button>
-                    <ShoppingCartIcon />
-                </button>
-            </div>
+
+            <div className='grow'></div>
+                <div className='flex-none'>
+                    <button>
+                        <ShoppingCartIcon />
+                    </button>
+                </div>
         </div>
     )
 }

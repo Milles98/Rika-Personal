@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import InputField from '../sections/InputField.jsx'
-import SelectField from '../sections/SelectField.jsx';
+import InputField from '../sections/fields/InputField.jsx'
+import SelectField from '../sections/fields/SelectField.jsx';
 import ArrowBack from '../../common/ArrowBack.jsx';
+import fetchProduct from '../../lib/fetchProduct.jsx';
+import updateProduct from '../../lib/updateProduct.jsx';
 
 const ProductEdit = () => {
     const { id } = useParams();
+    const fetchedData = fetchProduct(id);
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         brand: '',
@@ -19,79 +22,27 @@ const ProductEdit = () => {
     });
 
     useEffect(() => {
-        const fetchProduct = async () => {
-            // Fetch first product from database
-            // TODO: Fetch product based on ID from URL parameters.
-            const response = await fetch(`https://productsreadall20241104171638.azurewebsites.net/Products`);
-            const data = await response.json();
+        if (fetchedData) {
+            setFormData(fetchedData);
+        }
+    }, [fetchedData]);
 
-            const firstData = Array.isArray(data) ? data[0] : data;
-            setFormData(firstData);
-        };
-
-        fetchProduct();
-    }, [id]);
-
+    // TODO: Change the categories and sizes to be fetched from a database/enum
     const categories = ['T-Shirt', 'Underwear', 'Pants'];
     const sizes = ['XS', 'S', 'M', 'L', 'XL'];
-    // Validate image url
-    const isValidImageURL = (url) => {
-        const onlineImagePattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg))$/i;
-        const standaloneImagePattern = /^(?=.{1,})(?:.*[\\\/])?.+\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg)$/i;
 
-        return onlineImagePattern.test(url) || standaloneImagePattern.test(url);
-    };
-    // Validation for the required fields.
-    const validate = () => {
-        const errors = {};
-        if (!formData.brand) errors.brand = "Brand is required.";
-        if (!formData.price) errors.price = "Price is required.";
-        if (isNaN(formData.price) || formData.price <= 0) errors.price = "Price must be a positive number.";
-        if (!formData.stock) errors.stock = "Stock is required.";
-        if (isNaN(formData.stock) || formData.stock < 0) errors.stock = "Stock cannot be negative.";
-        if (!formData.image) {
-            errors.image = "Image URL is required.";
-        } else if (!isValidImageURL(formData.image)) {
-            errors.image = "Image URL must be a valid image format (JPEG, PNG, GIF, etc.).";
-        }
-        return errors;
-    };
     // Change Form Data values when changing fields
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-        if (errors[name]) {
-            setErrors({ ...errors, [name]: undefined })
-        }
     };
+
     // Handle validation and API call when updating
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const validationErrors = validate();
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-        } else {
-            try {
-                const response = await fetch(`https://localhost:7291/api/UpdateProduct/3`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-
-                if (response.ok) {
-                    // TODO: Add success message (after or before redirection?)
-                    const responseJson = await response.json();
-                    console.log(responseJson); 
-                } else {
-                    // TODO: Add fail message
-                    console.error("Error updating product:", response.statusText);
-                }
-            } catch (error) {
-                console.error("Error submitting form:", error);
-            }
+        const updateResponse = await updateProduct(id, formData);
+        if (Object.keys(updateResponse).length > 0) {
+            setErrors(updateResponse)
         }
     };
 

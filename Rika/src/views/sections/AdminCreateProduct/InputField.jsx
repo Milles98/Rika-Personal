@@ -8,8 +8,7 @@ const InputField = ({ label, name, value, onChange, type = 'text', error }) => (
             name={name}
             value={value}
             onChange={onChange}
-            className="mt-1 p-2 sm:p-3 border border-gray-300 rounded w-full text-sm sm:text-base"
-            
+            className={`mt-1 p-2 sm:p-3 border ${error ? 'border-red-500' : 'border-gray-300'} rounded w-full text-sm sm:text-base`}
         />
         {error && <p className="text-red-600 text-xs sm:text-sm">{error}</p>}
     </div>

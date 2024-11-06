@@ -17,9 +17,9 @@ export const PostProductProvider = ({ children }) => {
             
             if (!response.ok) {
                 throw new Error("Network response was not ok");
-            }
+            }       
+            return response.ok
             
-            console.log("Product created!");
         } catch (error) {
             console.error("Error posting product:", error);
             return null; 

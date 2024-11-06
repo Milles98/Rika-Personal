@@ -22,14 +22,14 @@ const CreateProduct = () => {
 
     const categories = ['T-Shirt', 'Underwear', 'Pants'];
     const sizes = ['XS', 'S', 'M', 'L', 'XL'];
-    // Validate image url
+
     const isValidImageURL = (url) => {
         const onlineImagePattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg))$/i;
-        const standaloneImagePattern = /^(?=.{1,})(?:.*[\\\/])?.+\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg)$/i;
+        const standaloneImagePattern = /^(?=.{1,})(?:.*[\\])?.+\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg)$/i;
 
         return onlineImagePattern.test(url) || standaloneImagePattern.test(url);
     };
-    // Validation for the required fields.
+
     const validate = () => {
         const errors = {};
         if (!formData.brand) errors.brand = "Brand is required.";
@@ -44,12 +44,11 @@ const CreateProduct = () => {
         }
         return errors;
     };
-    // Change Form Data values when changing fields
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-    // Handle validation and API call when updating
     const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = validate();
@@ -62,6 +61,12 @@ const CreateProduct = () => {
                 const result = await postProductsAsync(formData);
                 if (result) {
                     console.log("Product successfully created:", result);
+                    document.getElementById('successMessage').hidden = false
+                    document.getElementById('failMessage').hidden = true
+                }
+                else {
+                    document.getElementById('failMessage').hidden = false
+                    document.getElementById('successMessage').hidden = true
                 }
             } catch (error) {
                 console.error("Error creating product:", error);
@@ -146,11 +151,21 @@ const CreateProduct = () => {
                 />
                 {/* Submit Button */}
                 <button 
+                    id="createButton"
                     type="submit"
-                    className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
-                >
+                    className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4">
                     Create Product
                 </button>
+                <div className="w-full text-green-500 p-2 rounded mt-4 text-center">
+                    <p id="successMessage" hidden>
+                        Product was successfully created!
+                    </p>
+                </div>
+                <div className="w-full text-red-500 p-2 rounded mt-4 text-center">
+                    <p id="failMessage" hidden>
+                        Failed to create product.
+                    </p>
+                </div>
             </form>
         </div>
     );

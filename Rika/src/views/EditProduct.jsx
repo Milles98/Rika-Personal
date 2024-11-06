@@ -30,7 +30,7 @@ const EditProduct = () => {
 
     useEffect(() => {
         getProduct();
-    }, [getData, id]);
+    }, [id]);
 
     // TODO: Change the categories and sizes to be fetched from a database/enum
     const categories = ['T-Shirt', 'Underwear', 'Pants'];

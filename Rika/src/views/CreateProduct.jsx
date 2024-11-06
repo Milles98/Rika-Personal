@@ -20,6 +20,7 @@ const CreateProduct = () => {
     });
   
 
+
     const categories = ['T-Shirt', 'Underwear', 'Pants'];
     const sizes = ['XS', 'S', 'M', 'L', 'XL'];
 
@@ -78,8 +79,8 @@ const CreateProduct = () => {
         <div className="flex items-center justify-center min-h-screen bg-gray-300 p-4">
             <form onSubmit={(e) => handleSubmit(e, formData)} className="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md w-full sm:w-96 md:w-2/3 lg:w-1/2 xl:w-1/3">
                 <div className="flex items-center justify-between mb-6">
-                    <ArrowBack goBackTo="/" />
-                    <h2 className="text-xl sm:text-2xl text-center flex-grow text-gray-800">Create Product</h2>
+                <ArrowBack goBackTo="/admin" />
+                <h2 className="text-xl sm:text-2xl text-center flex-grow text-gray-800">Create Product</h2>
                     <div className="sm:w-6"></div>
                 </div>
                 {/* Brand */}

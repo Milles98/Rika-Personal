@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import InputField from '../sections/fields/InputField.jsx'
-import SelectField from '../sections/fields/SelectField.jsx';
-import ArrowBack from '../../common/ArrowBack.jsx';
-import fetchProduct from '../../lib/fetchProduct.jsx';
-import updateProduct from '../../lib/updateProduct.jsx';
+import InputField from './sections/fields/InputField.jsx'
+import SelectField from './sections/fields/SelectField.jsx';
+import ArrowBack from './../common/ArrowBack.jsx'
+import fetchProduct from './../lib/fetchProduct.jsx';
+import updateProduct from './../lib/updateProduct.jsx';
 
-const ProductEdit = () => {
+const EditProduct = () => {
     const { id } = useParams();
     const fetchedData = fetchProduct(id);
     const [errors, setErrors] = useState({});
@@ -135,4 +135,4 @@ const ProductEdit = () => {
     );
 };
 
-export default ProductEdit;
+export default EditProduct;

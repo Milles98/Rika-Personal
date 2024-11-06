@@ -15,6 +15,7 @@ import CustomerLandingPage from "./views/customerpages/CustomerLandingPage.jsx";
 import AdminLandingPage from "./views/adminpages/AdminLandingPage.jsx";
 import Header from "./views/sections/header/Header";
 import ProductDetails from "./views/ProductDetails";
+import CreateProduct from "./views/CreateProduct";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="/login" element={<Login />} />
             <Route path="/customer" element={<CustomerLandingPage />} />
             <Route path="/admin" element={<AdminLandingPage />} />
+            <Route path="/productscreate" element={<CreateProduct />} />
           </Routes>
         </div>
        </PostProductProvider>

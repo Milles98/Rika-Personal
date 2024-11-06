@@ -33,6 +33,7 @@ const CreateProduct = () => {
     const validate = () => {
         const errors = {};
         if (!formData.brand) errors.brand = "Brand is required.";
+        if (!formData.model) errors.model = "Model is required.";
         if (!formData.price) errors.price = "Price is required.";
         if (isNaN(formData.price) || formData.price <= 0) errors.price = "Price must be a positive number.";
         if (!formData.stock) errors.stock = "Stock is required.";
@@ -95,6 +96,7 @@ const CreateProduct = () => {
                     name="model"
                     value={formData.model}
                     onChange={handleChange}
+                    error={errors.model}
                 />
                 {/* Product Description */}
                 <div className="mb-4">

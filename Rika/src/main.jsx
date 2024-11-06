@@ -9,6 +9,8 @@ import "./assets/css/main.css";
 import Home from "./views/Home";
 import Products from "./views/Products";
 import Header from "./views/sections/header/Header";
+import ProductDetails from "./views/ProductDetails";
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -19,6 +21,7 @@ createRoot(document.getElementById("root")).render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/productdetails" element={<ProductDetails />} />
           </Routes>
         </div>
       </FetchProductsProvider>

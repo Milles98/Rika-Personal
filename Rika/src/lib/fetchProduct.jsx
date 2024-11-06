@@ -17,6 +17,17 @@ export const FetchProductProvider = ({ children }) => {
             return updatedData;
         } catch (err) {
             console.log("Product could not fetched");
+            const emptyForm = {
+                brand: '',
+                model: '',
+                description: '',
+                price: '',
+                category: '',
+                image: '',
+                stock: '',
+                size: '',
+            };
+            return emptyForm;
         }
     }
     return (

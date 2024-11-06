@@ -7,9 +7,10 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const apiUrl = 'https://rika-identity-user-f5e3fddxg4bve2eg.swedencentral-01.azurewebsites.net/api/CustomerLogin/login'
+        const tokenUrl = 'https://rika-tokengenerator.azurewebsites.net/TokenGenerator/login'
+        //const apiUrl = 'https://rika-identity-user-f5e3fddxg4bve2eg.swedencentral-01.azurewebsites.net/api/CustomerLogin/login'
         try {
-            const response = await fetch(apiUrl, {
+            const response = await fetch(tokenUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -19,6 +20,8 @@ const Login = () => {
 
             const data = await response.json();
             console.log(data)
+
+            // get token and set to cookie?
 
         } catch (error) {
             console.error('Error during login:', error);
@@ -53,6 +56,9 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}/>
                 <LoginButton color="#000" label={"Log in"}/>
             </form>
+            <from>
+
+            </from>
 
             <div className="mb-4">---or---</div>
             <LoginButton color="#3b5998" label={"Continue with Facebook"}/>

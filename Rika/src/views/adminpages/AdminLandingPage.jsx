@@ -1,5 +1,4 @@
-﻿import React from 'react';
-import {useAuth} from "../../lib/authorizeRole.jsx";
+﻿import {useAuth} from "../../lib/authorizeRole.jsx";
 import {useCookies} from "react-cookie";
 
 const AdminLandingPage = () => {

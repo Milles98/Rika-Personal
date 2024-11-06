@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import {jwtDecode} from 'jwt-decode';
 import {useCookies} from "react-cookie";
+import PropTypes from "prop-types";
 
 const AuthContext = createContext();
 
@@ -34,3 +35,7 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 };
+
+AuthProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+}

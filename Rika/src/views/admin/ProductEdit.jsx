@@ -72,21 +72,22 @@ const ProductEdit = () => {
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
-            console.log(formData)
             try {
-                // const response = await fetch(`url/${id}`, {
-                //     method: 'PUT',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     body: JSON.stringify(formData),
-                // });
+                const response = await fetch(`https://localhost:7291/api/UpdateProduct/3`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
 
                 if (response.ok) {
-                    console.log("Product updated successfully");
+                    // TODO: Add success message (after or before redirection?)
+                    const responseJson = await response.json();
+                    console.log(responseJson); 
                 } else {
+                    // TODO: Add fail message
                     console.error("Error updating product:", response.statusText);
-                    // Handle errors if needed, e.g., by setting an error message in state
                 }
             } catch (error) {
                 console.error("Error submitting form:", error);

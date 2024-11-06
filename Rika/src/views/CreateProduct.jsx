@@ -2,10 +2,11 @@ import React, { useState, } from 'react';
 import SelectField from './sections/AdminCreateProduct/SelectField.jsx';
 import ArrowBack from './../common/ArrowBack.jsx';
 import InputField from './sections/AdminCreateProduct/InputField.jsx';
-import { PostProductProvider, usePostProducts } from '../lib/postProducts.jsx';
+import { UsePostProducts } from '../lib/postProducts.jsx';
 
 const CreateProduct = () => {
   
+    const { postProductsAsync } = UsePostProducts();
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         brand: '',
@@ -17,7 +18,6 @@ const CreateProduct = () => {
         stock: '',
         size: '',
     });
-
   
 
     const categories = ['T-Shirt', 'Underwear', 'Pants'];
@@ -50,20 +50,27 @@ const CreateProduct = () => {
         setFormData({ ...formData, [name]: value });
     };
     // Handle validation and API call when updating
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = validate();
+        
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
             console.log("Form submitted", formData);
-            // TODO: Call API to update product
+            try {
+                const result = await postProductsAsync(formData);
+                if (result) {
+                    console.log("Product successfully created:", result);
+                }
+            } catch (error) {
+                console.error("Error creating product:", error);
+            }
         }
     };
-
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-300 p-4">
-            <form onSubmit={(e) => usePostProducts(e, formData)} className="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md w-full sm:w-96 md:w-2/3 lg:w-1/2 xl:w-1/3">
+            <form onSubmit={(e) => handleSubmit(e, formData)} className="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md w-full sm:w-96 md:w-2/3 lg:w-1/2 xl:w-1/3">
                 <div className="flex items-center justify-between mb-6">
                     <ArrowBack goBackTo="/" />
                     <h2 className="text-xl sm:text-2xl text-center flex-grow text-gray-800">Create Product</h2>

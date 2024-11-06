@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
-import {useAuth} from "../../lib/authorizeRole.jsx";
+import React, {useContext, useEffect} from 'react';
+import {AuthContext} from "../../lib/AuthProvider.jsx";
+import LogoutButton from "../../common/LogoutButton.jsx";
 
 const CustomerLandingPage = () => {
-    const {userRole, isAuthenticated, checkAuth} = useAuth();
+    const {userRole, isAuthenticated, checkAuth} = useContext(AuthContext);
 
     useEffect(() => {
         const authorizeUser = async () => {
@@ -23,6 +24,7 @@ const CustomerLandingPage = () => {
     return (
         <div>
             <h1>Welcome customer!</h1>
+            <LogoutButton/>
         </div>
     );
 };

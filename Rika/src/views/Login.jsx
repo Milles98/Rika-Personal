@@ -1,8 +1,8 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import LoginButton from "../common/LoginButton.jsx";
 import authApi from "../lib/authApi.js";
-import {useAuth} from "../lib/authorizeRole.jsx";
+import {AuthContext} from "../lib/AuthProvider.jsx";
 
 
 const Login = () => {
@@ -10,42 +10,55 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const navigate = useNavigate();
-    const {userRole} = useAuth();
 
-    const { checkAuth } = useAuth();
+    const navigate = useNavigate();
+
+    const {userRole, isAuthenticated, checkAuth, loading} = useContext(AuthContext);
 
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
         return emailRegex.test(email);
     };
 
+    useEffect(() => {
+        if (isAuthenticated) {
+            if (userRole === "Customer") {
+                navigate("/customer")
+            } else if (userRole === "Admin") {
+                navigate("/admin")
+            }
+        }
+    }, [isAuthenticated, userRole, navigate]);
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setEmailError("");
+        setPasswordError("");
 
         if(!validateEmail(email)) {
             setEmailError("Please enter a valid email address.");
             return;
         }
+
         if(password.length < 6) {
             setPasswordError("Password must be at least 6 characters.");
             return;
         }
+
         const endPoint = '/TokenGenerator/login';
         try {
             const response = await authApi.post(endPoint, {email, password}, {withCredentials:true});
             if(response.status === 200){
                 await checkAuth();
-                if(userRole === "Customer")
-                    navigate("/customer");
-                if (userRole === "Admin")
-                    navigate("/admin");
             }
         } catch (error) {
             console.error('Error during login:', error);
         }
     };
+
+    if(loading){
+        return <div>Loading...</div>
+    }
 
     return (
         <div className="flex font-mont flex-col items-center justify-center">

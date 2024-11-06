@@ -1,12 +1,13 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import PropTypes from "prop-types";
 import authApi from "./authApi.js";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [userRole, setUserRole] = useState("");
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const checkAuth = async () => {
         try{
@@ -16,6 +17,8 @@ export const AuthProvider = ({ children }) => {
         } catch {
             setIsAuthenticated(false);
             setUserRole("");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -24,14 +27,11 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ userRole, isAuthenticated, checkAuth }}>
+        <AuthContext.Provider value={{ userRole, isAuthenticated, setIsAuthenticated, setUserRole, checkAuth, loading }}>
             {children}
         </AuthContext.Provider>
     );
 };
-
-
-export const useAuth = () => useContext(AuthContext);
 
 AuthProvider.propTypes = {
     children: PropTypes.node.isRequired,

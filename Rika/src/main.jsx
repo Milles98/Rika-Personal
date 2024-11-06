@@ -10,8 +10,9 @@ import Home from "./views/Home";
 import Products from "./views/Products";
 import Login from "./views/Login.jsx";
 import CustomerLandingPage from "./views/customerpages/CustomerLandingPage.jsx";
-import {AuthProvider} from "./lib/authorizeRole.jsx";
+import {AuthProvider} from "./lib/AuthProvider.jsx";
 import AdminLandingPage from "./views/adminpages/AdminLandingPage.jsx";
+import ProtectedRoute from "./lib/ProtectedRoute.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -23,8 +24,25 @@ createRoot(document.getElementById("root")).render(
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/customer" element={<CustomerLandingPage />} />
-              <Route path="/admin" element={<AdminLandingPage />} />
+
+              <Route
+                  path="/customer"
+                  element={
+                    <ProtectedRoute requiredRole="customer">
+                      <CustomerLandingPage />
+                    </ProtectedRoute>
+                  }
+              />
+
+              <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute requiredRole="admin">
+                      <AdminLandingPage />
+                    </ProtectedRoute>
+                  }
+              />
+
             </Routes>
           </AuthProvider>
         </div>

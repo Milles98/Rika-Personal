@@ -10,12 +10,15 @@ import Home from "./views/Home";
 import Products from "./views/Products";
 import Header from "./views/sections/header/Header";
 import ProductDetails from "./views/ProductDetails";
+import CreateProduct from "./views/CreateProduct";
+import { PostProductProvider } from "./lib/postProducts";
 
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter> 
       <FetchProductsProvider>
+        <PostProductProvider>
         <Header />
         <div className="px-4 pt-10 pb-[86px]">
           <Routes>
@@ -24,6 +27,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="/productdetails" element={<ProductDetails />} />
           </Routes>
         </div>
+        </PostProductProvider>
       </FetchProductsProvider>
     </BrowserRouter>
   </StrictMode>

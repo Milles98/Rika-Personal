@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import InputField from './sections/fields/InputField.jsx'
 import SelectField from './sections/fields/SelectField.jsx';
 import ArrowBack from './../common/ArrowBack.jsx'
-import fetchProduct from './../lib/fetchProduct.jsx';
-import updateProduct from './../lib/updateProduct.jsx';
+import { useFetchProduct } from './../lib/fetchProduct.jsx';
+import { useUpdateProduct } from '../lib/updateProduct.jsx';
 
 const EditProduct = () => {
     const { id } = useParams();
-    const fetchedData = fetchProduct(id);
+    const { getData } = useFetchProduct();
+    const { updateProduct } = useUpdateProduct();
+    const navigate = useNavigate();
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         brand: '',
@@ -21,11 +23,14 @@ const EditProduct = () => {
         size: '',
     });
 
+    const getProduct = async () => {
+        const data = await getData(id);
+        setFormData(data);
+    }
+
     useEffect(() => {
-        if (fetchedData) {
-            setFormData(fetchedData);
-        }
-    }, [fetchedData]);
+        getProduct();
+    }, [getData, id]);
 
     // TODO: Change the categories and sizes to be fetched from a database/enum
     const categories = ['T-Shirt', 'Underwear', 'Pants'];
@@ -42,7 +47,9 @@ const EditProduct = () => {
         e.preventDefault();
         const updateResponse = await updateProduct(id, formData);
         if (Object.keys(updateResponse).length > 0) {
-            setErrors(updateResponse)
+            setErrors(updateResponse);
+        } else {
+            navigate('/admin');
         }
     };
 
@@ -50,7 +57,7 @@ const EditProduct = () => {
         <div className="flex items-center justify-center min-h-screen bg-gray-300 p-4">
             <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md w-full sm:w-96 md:w-2/3 lg:w-1/2 xl:w-1/3">
                 <div className="flex items-center justify-between mb-6">
-                    <ArrowBack goBackTo="/" />
+                    <ArrowBack goBackTo="/admin" />
                     <h2 className="text-xl sm:text-2xl text-center flex-grow text-gray-800">Edit Product</h2>
                     <div className="sm:w-6"></div>
                 </div>
@@ -68,6 +75,7 @@ const EditProduct = () => {
                     name="model"
                     value={formData.model}
                     onChange={handleChange}
+                    error={errors.model}
                 />
                 {/* Product Description */}
                 <div className="mb-4">

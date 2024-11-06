@@ -1,4 +1,5 @@
 ﻿import React from 'react'
+import PropTypes from "prop-types";
 
 const LoginButton = ({label, color, textColor, onClick}) => {
     return (
@@ -12,4 +13,12 @@ const LoginButton = ({label, color, textColor, onClick}) => {
         </button>
     )
 }
+
+LoginButton.propTypes = {
+    label: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+    textColor: PropTypes.string,
+    onClick: PropTypes.func
+}
+
 export default LoginButton

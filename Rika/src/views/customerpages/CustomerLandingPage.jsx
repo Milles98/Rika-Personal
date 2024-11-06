@@ -1,10 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useAuth} from "../../lib/authorizeRole.jsx";
-import {useCookies} from "react-cookie";
 
 const CustomerLandingPage = () => {
-    const {userRole, isAuthenticated} = useAuth();
-    const [cookies] = useCookies(["jwt"]);
+    const {userRole, isAuthenticated, checkAuth} = useAuth();
+
+    useEffect(() => {
+        const authorizeUser = async () => {
+            await checkAuth();
+        }
+
+        authorizeUser();
+    }, [checkAuth]);
 
     if (!isAuthenticated) {
         return <div>I am not authenticated.</div>;

@@ -1,17 +1,19 @@
 ﻿import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import LoginButton from "../common/LoginButton.jsx";
-import { useCookies } from 'react-cookie';
+import authApi from "../lib/authApi.js";
+import {useAuth} from "../lib/authorizeRole.jsx";
 
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [cookie, setCookie] = useCookies(['jwt']);
-    const navigate = useNavigate();
-
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const navigate = useNavigate();
+    const {userRole} = useAuth();
+
+    const { checkAuth } = useAuth();
 
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
@@ -30,27 +32,15 @@ const Login = () => {
             setPasswordError("Password must be at least 6 characters.");
             return;
         }
-        const tokenUrl = 'https://rika-tokenservice-agbebvf3drayfqf6.swedencentral-01.azurewebsites.net/TokenGenerator/login';
-        
+        const endPoint = '/TokenGenerator/login';
         try {
-            const response = await fetch(tokenUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
-            const data = await response.json();
-            const token = data.token;
-            if (token) {
-                //TODO fix maxAge to something else.
-                setCookie('jwt', token, { path: '/', maxAge: 3600, sameSite: 'strict', secure: true });
-
-                if(token.userRole === "Customer"){
-                    navigate("/Customer");
-                } else {
-                    navigate("/Admin");
-                }
+            const response = await authApi.post(endPoint, {email, password}, {withCredentials:true});
+            if(response.status === 200){
+                await checkAuth();
+                if(userRole === "Customer")
+                    navigate("/customer");
+                if (userRole === "Admin")
+                    navigate("/admin");
             }
         } catch (error) {
             console.error('Error during login:', error);

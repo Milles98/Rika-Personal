@@ -1,40 +1,37 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import {jwtDecode} from 'jwt-decode';
-import {useCookies} from "react-cookie";
 import PropTypes from "prop-types";
+import authApi from "./authApi.js";
 
 const AuthContext = createContext();
 
-export const useAuth = () => useContext(AuthContext);
-
 export const AuthProvider = ({ children }) => {
-    const [cookies] = useCookies(["jwt"]);
     const [userRole, setUserRole] = useState("");
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    useEffect(() => {
-        const token = cookies.jwt;
-
-        if (token){
-            try {
-                const decodedToken = jwtDecode(token);
-                setUserRole(decodedToken.role);
-                setIsAuthenticated(true);
-            } catch (error) {
-                console.log(error)
-                setIsAuthenticated(false);
-            }
-        } else {
+    const checkAuth = async () => {
+        try{
+            const response = await authApi.get('/authorize', {withCredentials: true});
+            setIsAuthenticated(response.data.isAuthenticated);
+            setUserRole(response.data.role);
+        } catch {
             setIsAuthenticated(false);
+            setUserRole("");
         }
-    }, [cookies]);
+    }
+
+    useEffect(() => {
+        checkAuth();
+    }, []);
 
     return (
-        <AuthContext.Provider value={{ userRole, isAuthenticated }}>
+        <AuthContext.Provider value={{ userRole, isAuthenticated, checkAuth }}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+
+export const useAuth = () => useContext(AuthContext);
 
 AuthProvider.propTypes = {
     children: PropTypes.node.isRequired,

@@ -1,5 +1,6 @@
 import React from 'react'
 import ArrowBack from '../../../common/ArrowBack'
+import ShoppingCartIcon from '../../../assets/icons/ShoppingCartIcon'
 
 const Navbar = () => {
     return (
@@ -11,7 +12,7 @@ const Navbar = () => {
             </div>
             <div className='flex-1'>
                 <button>
-                    <img src="/src/assets/cart.svg" alt="" />
+                    <ShoppingCartIcon />
                 </button>
             </div>
         </div>

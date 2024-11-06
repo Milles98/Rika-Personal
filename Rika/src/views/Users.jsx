@@ -38,12 +38,15 @@ const Users = () => {
         <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">
           Users
         </h1>
-        <ul>
+        {/* TODO - Add user Type and user Status */}
+        <ul className="divide-y divide-gray-300 border-t border-b border-gray-300">
             { users.map((user) =>(
-                <li key={user.id}>
-                    {/* <p>Type: {user.type}</p> */}
-                    <p>Name: {user.username} Email: {user.email} Phone: {user.phoneNumber} City: {user.city}</p>
-                    {/* <p>Status: {user.isDeleted}</p> */}
+                <li key={user.id} className="py-3">
+                    <div className="">
+                        <h2 className="text-black font-mont text-[14px] font-semibold">Name: {user.username} Email: {user.email} Phone: {user.phoneNumber} City: {user.city}</h2>
+                        <p className="text-[#666] font-mont font-semibold text-[11px]">Name {user.username}</p>                        
+                    </div>
+
                 </li>
             ))}
         </ul>

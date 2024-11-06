@@ -3,12 +3,13 @@ import { useParams } from 'react-router-dom';
 import InputField from './sections/fields/InputField.jsx'
 import SelectField from './sections/fields/SelectField.jsx';
 import ArrowBack from './../common/ArrowBack.jsx'
-import fetchProduct from './../lib/fetchProduct.jsx';
-import updateProduct from './../lib/updateProduct.jsx';
+import { useFetchProduct } from './../lib/fetchProduct.jsx';
+import { useUpdateProduct } from '../lib/updateProduct.jsx';
 
 const EditProduct = () => {
     const { id } = useParams();
-    const fetchedData = fetchProduct(id);
+    const { getData } = useFetchProduct();
+    const { updateProduct } = useUpdateProduct();
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         brand: '',
@@ -21,11 +22,14 @@ const EditProduct = () => {
         size: '',
     });
 
+    const getProduct = async () => {
+        const data = await getData(id);
+        setFormData(data);
+    }
+
     useEffect(() => {
-        if (fetchedData) {
-            setFormData(fetchedData);
-        }
-    }, [fetchedData]);
+        getProduct();
+    }, [getData, id]);
 
     // TODO: Change the categories and sizes to be fetched from a database/enum
     const categories = ['T-Shirt', 'Underwear', 'Pants'];
@@ -68,6 +72,7 @@ const EditProduct = () => {
                     name="model"
                     value={formData.model}
                     onChange={handleChange}
+                    error={errors.model}
                 />
                 {/* Product Description */}
                 <div className="mb-4">

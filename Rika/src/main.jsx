@@ -17,29 +17,35 @@ import Header from "./views/sections/header/Header";
 import ProductDetails from "./views/ProductDetails";
 import EditProduct from "./views/EditProduct";
 import CreateProduct from "./views/CreateProduct";
+import { FetchProductProvider } from "./lib/fetchProduct.jsx";
+import { UpdateProductProvider } from "./lib/updateProduct.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter> 
-     <AuthProvider>
-      <FetchProductsProvider>
-       <PostProductProvider>
-        <Header />
-        <div className="px-4 pt-10 pb-[86px]">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/productdetails" element={<ProductDetails />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/customer" element={<CustomerLandingPage />} />
-            <Route path="/admin" element={<AdminLandingPage />} />
-            <Route path="/productscreate" element={<CreateProduct />} />
-            <Route path="/admin/edit-product/:id" element={<EditProduct />} />
-          </Routes>
-        </div>
-       </PostProductProvider>
-      </FetchProductsProvider>
-     </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <FetchProductsProvider>
+          <FetchProductProvider>
+            <UpdateProductProvider>
+              <PostProductProvider>
+                <Header />
+                <div className="px-4 pt-10 pb-[86px]">
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/productdetails" element={<ProductDetails />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/customer" element={<CustomerLandingPage />} />
+                    <Route path="/admin" element={<AdminLandingPage />} />
+                    <Route path="/productscreate" element={<CreateProduct />} />
+                    <Route path="/admin/edit-product/:id" element={<EditProduct />} />
+                  </Routes>
+                </div>
+              </PostProductProvider>
+            </UpdateProductProvider>
+          </FetchProductProvider>
+        </FetchProductsProvider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>
 );

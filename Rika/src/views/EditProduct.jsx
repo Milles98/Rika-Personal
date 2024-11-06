@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import InputField from './sections/fields/InputField.jsx'
 import SelectField from './sections/fields/SelectField.jsx';
 import ArrowBack from './../common/ArrowBack.jsx'
@@ -10,6 +10,7 @@ const EditProduct = () => {
     const { id } = useParams();
     const { getData } = useFetchProduct();
     const { updateProduct } = useUpdateProduct();
+    const navigate = useNavigate();
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         brand: '',
@@ -46,7 +47,9 @@ const EditProduct = () => {
         e.preventDefault();
         const updateResponse = await updateProduct(id, formData);
         if (Object.keys(updateResponse).length > 0) {
-            setErrors(updateResponse)
+            setErrors(updateResponse);
+        } else {
+            navigate('/admin');
         }
     };
 

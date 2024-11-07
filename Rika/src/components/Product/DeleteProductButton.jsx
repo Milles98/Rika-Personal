@@ -1,5 +1,3 @@
-// src/components/Product/DeleteProductButton.jsx
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
@@ -12,12 +10,18 @@ import { softDeleteProduct, permanentDeleteProduct } from '../../services/produc
  * Props:
  * - productId (number): ID of the product to delete.
  * - type (string): Type of delete action, either "soft" or "permanent".
+ * - isAdmin (boolean): Whether the user is an admin; controls button visibility.
  * 
  * Usage Example:
- * <DeleteProductButton productId={123} type="soft" />
+ * <DeleteProductButton productId={123} type="soft" isAdmin={true} />
  */
-const DeleteProductButton = ({ productId, type }) => {
+const DeleteProductButton = ({ productId, type, isAdmin }) => {
   const navigate = useNavigate();
+
+  // admin check
+  if (!isAdmin) {
+    return null;
+    }
 
   const handleDelete = async () => {
     const isSoftDelete = type === 'soft';
@@ -57,6 +61,7 @@ const DeleteProductButton = ({ productId, type }) => {
 DeleteProductButton.propTypes = {
   productId: PropTypes.number.isRequired,
   type: PropTypes.oneOf(['soft', 'permanent']).isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 };
 
 export default DeleteProductButton;

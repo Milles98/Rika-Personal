@@ -28,8 +28,8 @@ const Users = () => {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="flex flex-col items-center gap-2">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-primary font-mont text-[16px] font-semibold">Loading users...</p>
+          <div className="w-8 h-8 border-4 border-t-transparent rounded-full animate-spin"></div>
+          <p className="font-mont text-[16px] font-semibold">Loading users...</p>
         </div>
       </div>
     );
@@ -38,8 +38,8 @@ const Users = () => {
   if (error) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg max-w-md mx-auto shadow-md flex items-center gap-2">
-          <FaExclamationTriangle className="text-red-700" />
+        <div className="bg-red-100 border border-red-400 px-4 py-3 rounded-lg max-w-md mx-auto shadow-md flex items-center gap-2">
+          <FaExclamationTriangle />
           <div className="font-mont">
             <strong className="font-bold">Error: </strong>
             <span className="block sm:inline">{error}</span>
@@ -49,11 +49,10 @@ const Users = () => {
     );
   }
 
-    {/* TODO - Add user Type and user Status */}
   return (
     <section className="flex flex-col gap-4 px-4 py-8 bg-gray-50 font-mont">
-      <ArrowBack goBackTo="/" className="mb-4" />
-      <h1 className="text-3xl font-mont font-bold text-primary mb-4">User List</h1>
+      <ArrowBack goBackTo="/" className="mb-4" /> 
+      <h1 className="text-3xl font-mont font-bold mb-4">User List</h1>
       <ul className="divide-y divide-gray-300">
         {users.map((user) => (
           <li key={user.id} className="p-4 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow mb-4">
@@ -69,7 +68,7 @@ const Users = () => {
                 <FaCity className="text-gray-600" /> {user.city}
               </p>
             </div>
-            <button className="mt-2 text-primary font-mont font-medium hover:underline">View Details</button>
+            <button className="mt-2 font-mont font-medium hover:underline">View Details</button>
           </li>
         ))}
       </ul>

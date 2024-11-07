@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { FetchProductsProvider } from "./lib/fetchProducts";
+import { FetchUsersProvider } from "./lib/fetchUsers";
 import { FetchProductProvider } from "./lib/fetchProduct";
 import { PostProductProvider } from "./lib/postProducts";
 import { UpdateProductProvider } from "./lib/updateProduct.jsx";
@@ -20,13 +21,13 @@ import Products from "./views/Products";
 import ProductDetails from "./views/ProductDetails";
 import EditProduct from "./views/EditProduct";
 import CreateProduct from "./views/CreateProduct";
-
-
+import Users from "./views/Users";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
+       <FetchUsersProvider>      
         <FetchProductsProvider>
           <FetchProductProvider>
             <UpdateProductProvider>
@@ -40,6 +41,7 @@ createRoot(document.getElementById("root")).render(
                     <Route path="/login" element={<Login />} />
                     <Route path="/productscreate" element={<CreateProduct />} />
                     <Route path="/admin/edit-product/:id" element={<EditProduct />} />
+                    <Route path="/users" element={<Users />} />
                       
                        <Route
                   path="/customer"
@@ -64,6 +66,7 @@ createRoot(document.getElementById("root")).render(
             </UpdateProductProvider>
           </FetchProductProvider>
         </FetchProductsProvider>
+       </FetchUsersProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

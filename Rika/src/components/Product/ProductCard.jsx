@@ -1,0 +1,1 @@
+// use for product card properties

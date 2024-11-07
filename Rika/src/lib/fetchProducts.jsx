@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import PropTypes from "prop-types";
 
 const FetchProducts = createContext();
 
@@ -19,3 +20,7 @@ export const FetchProductsProvider = ({ children }) => {
     </FetchProducts.Provider>
   );
 };
+
+FetchProductsProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+}

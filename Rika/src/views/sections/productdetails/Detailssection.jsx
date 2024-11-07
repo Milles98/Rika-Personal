@@ -8,10 +8,9 @@ import { useParams } from 'react-router-dom';
 
 const Detailssection = () => {
     const { id } = useParams();
-    console.log(id);
     const { getData } = useFetchProduct();
     const [productDetails, setProductDetails] = useState({
-        name: '',
+        brand: '',
         model:'',
         description: '',
         price: '',
@@ -20,11 +19,7 @@ const Detailssection = () => {
     useEffect(() => {
         const fetchProductDetails = async () => {
             const data = await getData(id);
-            setProductDetails({
-                name: data.name || 'Unknown Product',
-                description: data.description || 'No description available.',
-                price: data.price || 'N/A'
-            });
+            setProductDetails(data);
         };
         fetchProductDetails();
     }, [getData, id]);
@@ -33,7 +28,7 @@ const Detailssection = () => {
         <section>
             <div className='flex gap-4 px-4 py-8'>
                 <div className='flex-none'>
-                    <h1 className='text-black font-mont text-[18px] font-extrabold leading-[150%]'>{productDetails.name}</h1>
+                    <h1 className='text-black font-mont text-[18px] font-extrabold leading-[150%]'>{productDetails.brand}</h1>
                     <p className='font-mont text-[#666666]'>{productDetails.model}</p>
                     <p className='font-mont text-[#666666]'>Price: {productDetails.price}</p>
                 </div>

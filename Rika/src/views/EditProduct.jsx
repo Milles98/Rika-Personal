@@ -46,10 +46,6 @@ const EditProduct = () => {
         return <div>I am not an admin.</div>;
     }
 
-
-
-
-
     // TODO: Change the categories and sizes to be fetched from a database/enum
     const categories = ['T-Shirt', 'Underwear', 'Pants'];
     const sizes = ['XS', 'S', 'M', 'L', 'XL'];
@@ -67,7 +63,7 @@ const EditProduct = () => {
         if (Object.keys(updateResponse).length > 0) {
             setErrors(updateResponse);
         } else {
-            navigate('/admin');
+            navigate('/products?update=success');
         }
     };
 

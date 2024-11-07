@@ -24,18 +24,22 @@ const Navbar = () => {
     return (
         <div className='flex'>
             <div className='flex-none'>
-                    <ArrowBack goBackTo="/" />
+                <ArrowBack goBackTo="/" />
             </div>
 
             <div className='grow'></div>
             <div className="gap-6 flex">
-
-                <EditProductButton label="Edit Product" isAdmin={admin} productId={id} />
-                <div className='flex-none'>
-                    <button>
-                        <ShoppingCartIcon />
-                    </button>
-                </div>
+                {
+                    admin ? (
+                        <EditProductButton label="Edit Product" productId={id} />
+                    ) : (
+                        <div className='flex-none'>
+                            <button>
+                                <ShoppingCartIcon />
+                            </button>
+                        </div>
+                    )
+                }
             </div>
         </div>
     )

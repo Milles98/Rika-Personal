@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
-const EditProductButton = ({ label = "Edit", isAdmin, productId }) => {
+const EditProductButton = ({ label = "Edit", productId }) => {
     const navigate = useNavigate();
 
-    if (!isAdmin) return null;
 
     const handleClick = () => {
-        navigate(`/admin/edit-product/${id}`)
+        navigate(`/admin/edit-product/${productId}`)
     }
 
     return (
@@ -22,7 +21,6 @@ const EditProductButton = ({ label = "Edit", isAdmin, productId }) => {
 
 EditProductButton.propTypes = {
     label: PropTypes.string,
-    isAdmin: PropTypes.bool.isRequired
 };
 
 export default EditProductButton;

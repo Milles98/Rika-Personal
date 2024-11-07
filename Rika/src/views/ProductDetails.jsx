@@ -2,16 +2,13 @@ import React from 'react'
 import ImageSection from './sections/productdetails/ImageSection'
 import Navbar from './sections/productdetails/NavBar'
 import Detailssection from './sections/productdetails/Detailssection'
-import { BrowserRouter } from 'react-router-dom'
-
+import { FetchProductProvider } from '../lib/fetchProduct'
 const ProductDetails = () => {
     return (
         <FetchProductProvider>
-            <BrowserRouter>
                 <Navbar />
                 <ImageSection />
                 <Detailssection />
-            </BrowserRouter>
         </FetchProductProvider>
     )
 }

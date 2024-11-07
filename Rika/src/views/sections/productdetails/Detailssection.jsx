@@ -1,16 +1,41 @@
 import React from 'react'
+import { useEffect, useState } from 'react'
 import HeartIcon from '../../../assets/icons/HeartIcon'
 import ShoppingCartIcon from '../../../assets/icons/ShoppingCartIcon'
 import BagWhite from '../../../assets/icons/BagWhite'
-
+import { useFetchProduct } from '../../../lib/fetchProduct';
+import { useParams } from 'react-router-dom';
 
 const Detailssection = () => {
+    const { id } = useParams();
+    console.log(id);
+    const { getData } = useFetchProduct();
+    const [productDetails, setProductDetails] = useState({
+        name: '',
+        model:'',
+        description: '',
+        price: '',
+    });
+
+    useEffect(() => {
+        const fetchProductDetails = async () => {
+            const data = await getData(id);
+            setProductDetails({
+                name: data.name || 'Unknown Product',
+                description: data.description || 'No description available.',
+                price: data.price || 'N/A'
+            });
+        };
+        fetchProductDetails();
+    }, [getData, id]);
+
     return (
         <section>
             <div className='flex gap-4 px-4 py-8'>
                 <div className='flex-none'>
-                    <h1 className='text-black font-mont text-[18px] font-extrabold leading-[150%]'>On Ear Headphone</h1>
-                    <p className='font-mont text-[#666666]'>Beats Solo3 Wireless Kulak</p>
+                    <h1 className='text-black font-mont text-[18px] font-extrabold leading-[150%]'>{productDetails.name}</h1>
+                    <p className='font-mont text-[#666666]'>{productDetails.model}</p>
+                    <p className='font-mont text-[#666666]'>Price: {productDetails.price}</p>
                 </div>
                 <div className='grow'></div>
                 <div className='flex-none'>
@@ -20,7 +45,7 @@ const Detailssection = () => {
 
             <div className='flex gap-4 px-4 flex-col'>
                 <h1 className='text-black font-mont text-[18px] font-extrabold leading-[150%]'>Description</h1>
-                <p className='font-mont text-[#666666]'>A roomy backpack from the specialists in everyday bags at Herschel Supply Co., featuring resilient canvas and a light-blue patina that feels just right for summer.</p>
+                <p className='font-mont text-[#666666]'>{productDetails.description}</p>
             </div>
 
             <div className='flex-col gap-4 px-4 py-6'>
@@ -43,7 +68,6 @@ const Detailssection = () => {
 
             <div className='flex gap-4 px-4 py-6'>
                 <button className='bg-[#ebebeb] rounded-xl px-3 py-3'><HeartIcon /></button>
-                <div className='grow'><button className='bg-orange-500 text-white rounded-lg px-3 py-3'>Edit (Only for Admin)</button></div>
                 <button className='flex gap-3 items-center rounded-2xl bg-black text-white font-mont px-3'><BagWhite /> Add to cart</button>
             </div>
 

@@ -9,7 +9,7 @@ import { AuthContext } from '../lib/AuthProvider.jsx';
 
 const EditProduct = () => {
     const { id } = useParams();
-    const { userRole, isAuthenticated, checkAuth } = useContext(AuthContext);
+    const { userRole, isAuthenticated, checkAuth, loading } = useContext(AuthContext);
     const { getData } = useFetchProduct();
     const { updateProduct } = useUpdateProduct();
     const navigate = useNavigate();
@@ -25,25 +25,30 @@ const EditProduct = () => {
         size: '',
     });
 
-    const getProduct = async () => {
-        const data = await getData(id);
-        setFormData(data);
-    }
+
     useEffect(() => {
+        const getProduct = async () => {
+            const data = await getData(id);
+            setFormData(data);
+        }
         const authorizeUser = async () => {
             await checkAuth();
         }
-
-        authorizeUser();
-        getProduct();
+        setTimeout(() => {
+            authorizeUser();
+            getProduct();
+        }, 500);
     }, [id, checkAuth]);
 
-    if (!isAuthenticated) {
-        return <div>I am not authenticated.</div>;
+    if (loading || !formData.brand) {
+        return <div className="font-bold flex items-center justify-center min-h-screen">Loading...</div>;
     }
 
-    if (userRole !== 'Admin') {
-        return <div>I am not an admin.</div>;
+    if (!isAuthenticated) {
+        return <div className="font-bold flex items-center justify-center min-h-screen">I am not authenticated.</div>;
+    }
+    else if (userRole !== 'Admin') {
+        return <div className="font-bold flex items-center justify-center min-h-screen">I am not an admin.</div>;
     }
 
     // TODO: Change the categories and sizes to be fetched from a database/enum
@@ -66,7 +71,6 @@ const EditProduct = () => {
             navigate('/products?update=success');
         }
     };
-
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-300 p-4">
             <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md w-full sm:w-96 md:w-2/3 lg:w-1/2 xl:w-1/3">
@@ -154,6 +158,7 @@ const EditProduct = () => {
                 </button>
             </form>
         </div>
+
     );
 };
 

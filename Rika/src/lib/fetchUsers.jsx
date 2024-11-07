@@ -22,7 +22,7 @@ export const FetchUsersProvider = ({ children }) => {
 
   const getCustomers = async () => {
     const res = await fetch(
-       "https://rika-identity-user-f5e3fddxg4bve2eg.swedencentral-01.azurewebsites.net/Customer/GetAll"
+       "https://rika-identity-user-f5e3fddxg4bve2eg.swedencentral-01.azurewebsites.net/Customer/GetCustomers"
     );
     return await res.json();
   };

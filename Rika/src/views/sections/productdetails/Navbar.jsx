@@ -7,7 +7,7 @@ const Navbar = () => {
         <div className='flex'>
             <div className='flex-none'>
                 <button>
-                    <ArrowBack />
+                    <ArrowBack goBackTo="/" />
                 </button>
             </div>
 

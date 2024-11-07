@@ -41,24 +41,29 @@ const Products = () => {
           <SearchIcon />
         </div>
       </nav>
-      <div className="flex flex-col gap-3">
-        <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">
-          Clothes
-        </h1>
-        {products.length === 0 ? (
-          <div className="flex flex-col justify-center gap-4 items-center h-40">
-            <p className="font-mont">No products are available</p>
-            <button onClick={getProducts} className="font-mont px-4 py-2 bg-black text-white rounded">
-              Retry to load products
-            </button>
-          </div>
-        ) : (
-          <div className="flex gap-[15px] flex-wrap justify-center mb-[9px]">
-            {products.map((product) => (
-              <ProductCard key={product.id} data={product} />
-            ))}
-          </div>
-        )}
+      <div className="flex justify-center w-full">
+        <div className="flex flex-col gap-3 max-w-[835px]">
+          <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">
+            Clothes
+          </h1>
+          {products.length === 0 ? (
+            <div className="flex flex-col justify-center gap-4 items-center h-40">
+              <p className="font-mont">No products are available</p>
+              <button
+                onClick={getProducts}
+                className="font-mont px-4 py-2 bg-black text-white rounded"
+              >
+                Retry to load products
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-[15px] flex-wrap mb-[9px]">
+              {products.map((product) => (
+                <ProductCard key={product.id} data={product} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

@@ -62,10 +62,10 @@ const Detailssection = () => {
                     </div>
                     <div className='grow'></div>
                     <div className='flex gap-3 py-6 px-3 border rounded-full'>
-                        <button className='bg-[#d9ccce] border border-2 hover:bg-[#d9ccce]/[.5] hover:text-white text-black font-bold px-3 rounded-full'></button>
-                        <button className='bg-[#4d4a5d] border border-2 hover:bg-[#4d4a5d]/[.5] hover:text-white text-black font-bold px-3 rounded-full'></button>
-                        <button className='bg-[#222222] border border-2 hover:bg-[#222222]/[.5] hover:text-white text-black font-bold px-3 rounded-full'></button>
-                        <button className='bg-[#ffffff] border border-2 hover:bg-[#808080]/[.1] hover:text-white text-black font-bold px-3 rounded-full'></button>
+                        <button className='bg-[#d9ccce] border-2 hover:bg-[#d9ccce]/[.5] hover:text-white text-black font-bold px-3 rounded-full'></button>
+                        <button className='bg-[#4d4a5d] border-2 hover:bg-[#4d4a5d]/[.5] hover:text-white text-black font-bold px-3 rounded-full'></button>
+                        <button className='bg-[#222222] border-2 hover:bg-[#222222]/[.5] hover:text-white text-black font-bold px-3 rounded-full'></button>
+                        <button className='bg-[#ffffff] border-2 hover:bg-[#808080]/[.1] hover:text-white text-black font-bold px-3 rounded-full'></button>
                     </div>
                 </div>
             </div>

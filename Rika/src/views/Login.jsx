@@ -1,61 +1,64 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import LoginButton from "../common/LoginButton.jsx";
-import { useCookies } from 'react-cookie';
+import authApi from "../lib/authApi.js";
+import {AuthContext} from "../lib/AuthProvider.jsx";
 
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [cookie, setCookie] = useCookies(['jwt']);
-    const navigate = useNavigate();
-
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+
+    const navigate = useNavigate();
+
+    const {userRole, isAuthenticated, checkAuth, loading} = useContext(AuthContext);
 
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
         return emailRegex.test(email);
     };
 
+    useEffect(() => {
+        if (isAuthenticated) {
+            if (userRole === "Customer") {
+                navigate("/customer")
+            } else if (userRole === "Admin") {
+                navigate("/admin")
+            }
+        }
+    }, [isAuthenticated, userRole, navigate]);
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setEmailError("");
+        setPasswordError("");
 
         if(!validateEmail(email)) {
             setEmailError("Please enter a valid email address.");
             return;
         }
+
         if(password.length < 6) {
             setPasswordError("Password must be at least 6 characters.");
             return;
         }
-        const tokenUrl = 'https://rika-tokenservice-agbebvf3drayfqf6.swedencentral-01.azurewebsites.net/TokenGenerator/login';
-        
-        try {
-            const response = await fetch(tokenUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
-            const data = await response.json();
-            const token = data.token;
-            if (token) {
-                //TODO fix maxAge to something else.
-                setCookie('jwt', token, { path: '/', maxAge: 3600, sameSite: 'strict', secure: true });
 
-                if(token.userRole === "Customer"){
-                    navigate("/Customer");
-                } else {
-                    navigate("/Admin");
-                }
+        const endPoint = '/TokenGenerator/login';
+        try {
+            const response = await authApi.post(endPoint, {email, password}, {withCredentials:true});
+            if(response.status === 200){
+                await checkAuth();
             }
         } catch (error) {
             console.error('Error during login:', error);
         }
     };
+
+    if(loading){
+        return <div>Loading...</div>
+    }
 
     return (
         <div className="flex font-mont flex-col items-center justify-center">

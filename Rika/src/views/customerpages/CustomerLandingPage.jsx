@@ -1,10 +1,17 @@
-import React from 'react';
-import {useAuth} from "../../lib/authorizeRole.jsx";
-import {useCookies} from "react-cookie";
+import React, {useContext, useEffect} from 'react';
+import {AuthContext} from "../../lib/AuthProvider.jsx";
+import LogoutButton from "../../common/LogoutButton.jsx";
 
 const CustomerLandingPage = () => {
-    const {userRole, isAuthenticated} = useAuth();
-    const [cookies] = useCookies(["jwt"]);
+    const {userRole, isAuthenticated, checkAuth} = useContext(AuthContext);
+
+    useEffect(() => {
+        const authorizeUser = async () => {
+            await checkAuth();
+        }
+
+        authorizeUser();
+    }, [checkAuth]);
 
     if (!isAuthenticated) {
         return <div>I am not authenticated.</div>;
@@ -17,6 +24,7 @@ const CustomerLandingPage = () => {
     return (
         <div>
             <h1>Welcome customer!</h1>
+            <LogoutButton/>
         </div>
     );
 };

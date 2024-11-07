@@ -4,10 +4,16 @@ import { useFetchProducts } from "../lib/fetchProducts";
 import ArrowBack from "../common/ArrowBack";
 import ProductCard from "./sections/products/ProductCard";
 import SearchIcon from "../assets/icons/SearchIcon";
+import { useLocation } from "react-router-dom";
+import SuccessAlert from "../common/SuccessAlert";
 
 const Products = () => {
   const { getData } = useFetchProducts();
+  const location = useLocation();
   const [products, setProducts] = useState([]);
+
+  const queryParams = new URLSearchParams(location.search);
+  const updateSuccess = queryParams.get('update') === 'success';
 
   const getProducts = async () => {
     const data = await getData();
@@ -21,8 +27,19 @@ const Products = () => {
   return (
     <section className="flex flex-col gap-4">
       <nav className="flex justify-between">
-        <ArrowBack goBackTo="/" />
-        <SearchIcon />
+        <div className="flex-none">
+          <ArrowBack goBackTo="/" />
+        </div>
+
+        {updateSuccess && (
+          <div className="flex-none">
+            <SuccessAlert message={"Product was successfully updated!"} />
+          </div>
+        )}
+
+        <div className="flex-none">
+          <SearchIcon />
+        </div>
       </nav>
       <div className="flex flex-col gap-3">
         <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">

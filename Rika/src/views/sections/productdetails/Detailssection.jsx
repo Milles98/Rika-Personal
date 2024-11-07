@@ -3,7 +3,7 @@ import React from 'react'
 
 const Detailssection = () => {
     return (
-        <section>
+        <section className="">
             <div className='flex gap-4 px-4 py-8'>
                 <div className='flex-none'>
                     <h1 className='text-black font-mont text-[18px] font-extrabold leading-[150%]'>On Ear Headphone</h1>
@@ -26,9 +26,9 @@ const Detailssection = () => {
                 <h1 className='text-black font-mont text-[18px] font-extrabold leading-[150%]'>Size</h1>
                 <div className='flex'>
                     <div className='flex gap-4 py-4'>
-                        <button className='bg-white border border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-4 rounded-full'>S</button>
-                        <button className='bg-white border border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-3 rounded-full'>M</button>
-                        <button className='bg-white border border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-4 rounded-full'>L</button>
+                        <button className='bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-4 rounded-full'>S</button>
+                        <button className='bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-3 rounded-full'>M</button>
+                        <button className='bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-4 rounded-full'>L</button>
                     </div>
                 </div>
             </div>

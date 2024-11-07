@@ -5,12 +5,11 @@ import Detailssection from './sections/productdetails/Detailssection'
 
 const ProductDetails = () => {
     return (
-        <>
-            <Navbar/>
+        <section className="sm:px-6 md:px-8">
+            <Navbar />
             <ImageSection />
             <Detailssection />
-        </>
-
+        </section>
     )
 }
 

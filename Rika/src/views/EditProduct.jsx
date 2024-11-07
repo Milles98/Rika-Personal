@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import InputField from './sections/fields/InputField.jsx'
 import SelectField from './sections/fields/SelectField.jsx';
 import ArrowBack from './../common/ArrowBack.jsx'
 import { useFetchProduct } from './../lib/fetchProduct.jsx';
 import { useUpdateProduct } from '../lib/updateProduct.jsx';
+import { AuthContext } from '../lib/AuthProvider.jsx';
 
 const EditProduct = () => {
     const { id } = useParams();
+    const { userRole, isAuthenticated, checkAuth } = useContext(AuthContext);
     const { getData } = useFetchProduct();
     const { updateProduct } = useUpdateProduct();
     const navigate = useNavigate();
@@ -27,10 +29,26 @@ const EditProduct = () => {
         const data = await getData(id);
         setFormData(data);
     }
-
     useEffect(() => {
+        const authorizeUser = async () => {
+            await checkAuth();
+        }
+
+        authorizeUser();
         getProduct();
-    }, [id]);
+    }, [id, checkAuth]);
+
+    if (!isAuthenticated) {
+        return <div>I am not authenticated.</div>;
+    }
+
+    if (userRole !== 'Admin') {
+        return <div>I am not an admin.</div>;
+    }
+
+
+
+
 
     // TODO: Change the categories and sizes to be fetched from a database/enum
     const categories = ['T-Shirt', 'Underwear', 'Pants'];

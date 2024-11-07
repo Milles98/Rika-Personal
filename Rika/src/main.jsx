@@ -6,7 +6,7 @@ import { FetchProductsProvider } from "./lib/fetchProducts";
 import { FetchProductProvider } from "./lib/fetchProduct";
 import { PostProductProvider } from "./lib/postProducts";
 import { UpdateProductProvider } from "./lib/updateProduct.jsx";
-import { AuthProvider } from "./lib/authorizeRole.jsx";
+import { AuthProvider } from "./lib/AuthProvider.jsx";
 import ProtectedRoute from "./lib/ProtectedRoute.jsx";
 
 import "./assets/css/main.css";

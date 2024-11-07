@@ -16,6 +16,7 @@ const ArrowBack = ({ goBackTo }) => {
         height="35"
         viewBox="0 0 35 35"
         fill="none"
+        className="transform hover:scale-110 transition-transform duration-200"
       >
         <circle cx="17.5" cy="17.5" r="17.5" fill="black" />
         <path

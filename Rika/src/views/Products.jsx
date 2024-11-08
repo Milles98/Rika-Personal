@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import { useFetchProducts } from "../lib/fetchProducts";
 
 import ArrowBack from "../common/ArrowBack";
 import ProductCard from "./sections/products/ProductCard";
 import SearchIcon from "../assets/icons/SearchIcon";
 import { useLocation } from "react-router-dom";
 import SuccessAlert from "../common/SuccessAlert";
+import { useProductContext } from "../lib/ProductProvider";
 
 const Products = () => {
-  const { getData } = useFetchProducts();
+  const { getProductsData } = useProductContext();
   const location = useLocation();
   const [products, setProducts] = useState([]);
 
@@ -16,13 +16,13 @@ const Products = () => {
   const updateSuccess = queryParams.get('update') === 'success';
 
   const getProducts = async () => {
-    const data = await getData();
+    const data = await getProductsData();
     setProducts(data);
   };
 
   useEffect(() => {
     getProducts();
-  }, [getData]);
+  }, [getProductsData]);
 
   return (
     <section className="flex flex-col gap-4">

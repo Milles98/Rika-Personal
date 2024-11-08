@@ -1,20 +1,20 @@
 import React from 'react'
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import { useFetchProduct } from '../../../lib/fetchProduct';
+import { useProductContext } from '../../../lib/ProductProvider';
 
 const ImageSection = () => {
     const { id } = useParams();
-    const { getData } = useFetchProduct();
+    const { getProductData } = useProductContext();
     const [productImage, setProductImage] = useState('');
 
     useEffect(() => {
         const fetchProductImage = async () => {
-            const data = await getData(id); 
+            const data = await getProductData(id);
             setProductImage(data.image || 'https://via.placeholder.com/150');
         };
         fetchProductImage();
-    }, [getData, id]);
+    }, [id]);
 
     return (
         <>

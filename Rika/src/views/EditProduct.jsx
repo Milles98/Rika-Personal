@@ -3,15 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import InputField from './sections/fields/InputField.jsx'
 import SelectField from './sections/fields/SelectField.jsx';
 import ArrowBack from './../common/ArrowBack.jsx'
-import { useFetchProduct } from './../lib/fetchProduct.jsx';
-import { useUpdateProduct } from '../lib/updateProduct.jsx';
 import { AuthContext } from '../lib/AuthProvider.jsx';
+import { useProductContext } from '../lib/ProductProvider.jsx';
 
 const EditProduct = () => {
     const { id } = useParams();
     const { userRole, isAuthenticated, checkAuth, loading } = useContext(AuthContext);
-    const { getData, notFound } = useFetchProduct();
-    const { updateProduct } = useUpdateProduct();
+    const { getProductData, updateProduct, notFound } = useProductContext();
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
@@ -28,7 +26,7 @@ const EditProduct = () => {
 
     useEffect(() => {
         const getProduct = async () => {
-            const data = await getData(id);
+            const data = await getProductData(id);
             setFormData(data);
         }
         const authorizeUser = async () => {

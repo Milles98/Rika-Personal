@@ -2,11 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { FetchProductsProvider } from "./lib/fetchProducts";
-import { FetchUsersProvider } from "./lib/fetchUsers";
-import { FetchProductProvider } from "./lib/fetchProduct";
-import { PostProductProvider } from "./lib/postProducts";
-import { UpdateProductProvider } from "./lib/updateProduct.jsx";
+
 import { AuthProvider } from "./lib/AuthProvider.jsx";
 import ProtectedRoute from "./lib/ProtectedRoute.jsx";
 
@@ -22,51 +18,44 @@ import ProductDetails from "./views/ProductDetails";
 import EditProduct from "./views/EditProduct";
 import CreateProduct from "./views/CreateProduct";
 import Users from "./views/Users";
+import { ProductProvider } from "./lib/ProductProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-       <FetchUsersProvider>      
-        <FetchProductsProvider>
-          <FetchProductProvider>
-            <UpdateProductProvider>
-              <PostProductProvider>
-                <Header />
-                <div className="px-4 pt-10 pb-[86px]">
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/products" element={<Products />} />
-                    <Route path="/productdetails/:id" element={<ProductDetails />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/productscreate" element={<CreateProduct />} />
-                    <Route path="/admin/edit-product/:id" element={<EditProduct />} />
-                    <Route path="/users" element={<Users />} />
-                      
-                       <Route
-                  path="/customer"
-                  element={
-                    <ProtectedRoute requiredRole="customer">
-                      <CustomerLandingPage />
-                    </ProtectedRoute>
-                  }
+        <ProductProvider>
+          <Header />
+          <div className="px-4 pt-10 pb-[86px]">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/productdetails/:id" element={<ProductDetails />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/productscreate" element={<CreateProduct />} />
+              <Route path="/admin/edit-product/:id" element={<EditProduct />} />
+              <Route path="/users" element={<Users />} />
+
+              <Route
+                path="/customer"
+                element={
+                  <ProtectedRoute requiredRole="customer">
+                    <CustomerLandingPage />
+                  </ProtectedRoute>
+                }
               />
 
               <Route
-                  path="/admin"
-                  element={
-                    <ProtectedRoute requiredRole="admin">
-                      <AdminLandingPage />
-                    </ProtectedRoute>
-                  }
+                path="/admin"
+                element={
+                  <ProtectedRoute requiredRole="admin">
+                    <AdminLandingPage />
+                  </ProtectedRoute>
+                }
               />
-                  </Routes>
-                </div>
-              </PostProductProvider>
-            </UpdateProductProvider>
-          </FetchProductProvider>
-        </FetchProductsProvider>
-       </FetchUsersProvider>
+            </Routes>
+          </div>
+        </ProductProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

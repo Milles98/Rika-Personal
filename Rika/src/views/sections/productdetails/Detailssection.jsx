@@ -2,29 +2,28 @@ import React from 'react'
 
 import { useEffect, useState } from 'react'
 import HeartIcon from '../../../assets/icons/HeartIcon'
-import ShoppingCartIcon from '../../../assets/icons/ShoppingCartIcon'
 import BagWhite from '../../../assets/icons/BagWhite'
-import { useFetchProduct } from '../../../lib/fetchProduct';
 import { useParams } from 'react-router-dom';
+import { useProductContext } from '../../../lib/ProductProvider'
 
 
 const Detailssection = () => {
     const { id } = useParams();
-    const { getData } = useFetchProduct();
+    const { getProductData } = useProductContext();
     const [productDetails, setProductDetails] = useState({
         brand: '',
-        model:'',
+        model: '',
         description: '',
         price: '',
     });
 
     useEffect(() => {
         const fetchProductDetails = async () => {
-            const data = await getData(id);
+            const data = await getProductData(id);
             setProductDetails(data);
         };
         fetchProductDetails();
-    }, [getData, id]);
+    }, [id]);
 
     return (
         <section>
@@ -54,9 +53,9 @@ const Detailssection = () => {
                         <button className='bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-3 rounded-full'>M</button>
                         <button className='bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-4 rounded-full'>L</button>
                     </div>
-                    
+
                     <div className='grow'></div>
-                
+
                     <div className='flex gap-3 py-6 px-3 border rounded-full'>
                         <button className='bg-[#d9ccce] border-2 hover:bg-[#d9ccce]/[.5] hover:text-white text-black font-bold px-3 rounded-full'></button>
                         <button className='bg-[#4d4a5d] border-2 hover:bg-[#4d4a5d]/[.5] hover:text-white text-black font-bold px-3 rounded-full'></button>

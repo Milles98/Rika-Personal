@@ -10,7 +10,7 @@ import { AuthContext } from '../lib/AuthProvider.jsx';
 const EditProduct = () => {
     const { id } = useParams();
     const { userRole, isAuthenticated, checkAuth, loading } = useContext(AuthContext);
-    const { getData } = useFetchProduct();
+    const { getData, notFound } = useFetchProduct();
     const { updateProduct } = useUpdateProduct();
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
@@ -38,7 +38,10 @@ const EditProduct = () => {
             authorizeUser();
             getProduct();
         }, 500);
-    }, [id, checkAuth]);
+    }, [id]);
+    if (notFound) {
+        return <div className="font-bold flex items-center justify-center min-h-screen">Product not found</div>;
+    }
 
     if (loading || !formData.brand) {
         return <div className="font-bold flex items-center justify-center min-h-screen">Loading...</div>;

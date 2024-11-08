@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import PropTypes from "prop-types";
 
 const FetchProduct = createContext();
@@ -7,6 +7,7 @@ const FetchProduct = createContext();
 export const useFetchProduct = () => useContext(FetchProduct);
 
 export const FetchProductProvider = ({ children }) => {
+    const [notFound, setNotFound] = useState(false);
     const getData = async (id) => {
         try {
             const response = await fetch(`https://rika-productreadone.azurewebsites.net/api/products/${id}`);
@@ -21,11 +22,12 @@ export const FetchProductProvider = ({ children }) => {
             return updatedData;
         } catch (err) {
             console.log(err);
+            setNotFound(true);
             return {};
         }
     }
     return (
-        <FetchProduct.Provider value={{ getData }}>
+        <FetchProduct.Provider value={{ getData, notFound }}>
             {children}
         </FetchProduct.Provider>
     );

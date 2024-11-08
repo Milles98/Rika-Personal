@@ -10,10 +10,10 @@ import { useParams } from 'react-router-dom';
 
 const Detailssection = () => {
     const { id } = useParams();
-    const { getData } = useFetchProduct();
+    const { getData, notFound } = useFetchProduct();
     const [productDetails, setProductDetails] = useState({
         brand: '',
-        model:'',
+        model: '',
         description: '',
         price: '',
     });
@@ -25,6 +25,13 @@ const Detailssection = () => {
         };
         fetchProductDetails();
     }, [getData, id]);
+
+    if (notFound) {
+        return <div className="font-bold flex items-center justify-center min-h-screen">
+            Product not found
+        </div>;
+    }
+
 
     return (
         <section>
@@ -54,9 +61,9 @@ const Detailssection = () => {
                         <button className='bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-3 rounded-full'>M</button>
                         <button className='bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-4 rounded-full'>L</button>
                     </div>
-                    
+
                     <div className='grow'></div>
-                
+
                     <div className='flex gap-3 py-6 px-3 border rounded-full'>
                         <button className='bg-[#d9ccce] border-2 hover:bg-[#d9ccce]/[.5] hover:text-white text-black font-bold px-3 rounded-full'></button>
                         <button className='bg-[#4d4a5d] border-2 hover:bg-[#4d4a5d]/[.5] hover:text-white text-black font-bold px-3 rounded-full'></button>

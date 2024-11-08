@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BlackFavoriteIcon from "../../../assets/icons/BlackFavoriteIcon";
 
 const ProductCard = ({ data }) => {
-  const { brand, image, price, model } = data;
+  const {id, brand, image, price, model } = data;
   const [imageSrc, setImageSrc] = useState(image);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkImageUrl = async () => {
@@ -17,9 +20,14 @@ const ProductCard = ({ data }) => {
         setImageSrc("/No_Product_Image_Available.png");
       }
     };
+   
 
     checkImageUrl();
   }, [image]);
+
+  const handleClick = () => {
+    navigate(`/productdetails/${id}`);
+  }
 
   const handleBrokenImage = () => {
     setImageSrc("/No_Product_Image_Available.png");
@@ -29,6 +37,7 @@ const ProductCard = ({ data }) => {
     <article className="flex flex-col items-center justify-center gap-2 relative cursor-pointer">
       <img
         className="w-[155px] h-[177px] filter rounded-2xl object-cover"
+        onClick={handleClick}
         src={imageSrc}
         alt={model}
         onError={handleBrokenImage}

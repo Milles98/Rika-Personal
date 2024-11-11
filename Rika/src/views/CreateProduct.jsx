@@ -1,4 +1,4 @@
-import React, { useState, } from 'react';
+import useState from 'react';
 import SelectField from './sections/AdminCreateProduct/SelectField.jsx';
 import ArrowBack from './../common/ArrowBack.jsx';
 import InputField from './sections/AdminCreateProduct/InputField.jsx';

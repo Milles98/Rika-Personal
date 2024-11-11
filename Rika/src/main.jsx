@@ -19,6 +19,7 @@ import EditProduct from "./views/EditProduct";
 import CreateProduct from "./views/CreateProduct";
 import Users from "./views/Users";
 import { ProductProvider } from "./lib/ProductProvider.jsx";
+import Register from "./views/Register.jsx"
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -35,7 +36,7 @@ createRoot(document.getElementById("root")).render(
               <Route path="/productscreate" element={<CreateProduct />} />
               <Route path="/admin/edit-product/:id" element={<EditProduct />} />
               <Route path="/users" element={<Users />} />
-
+              <Route path="/register" element={<Register />} />
               <Route
                 path="/customer"
                 element={

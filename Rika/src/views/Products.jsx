@@ -12,7 +12,8 @@ const Products = () => {
   const location = useLocation();
   const [products, setProducts] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState([])
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [noResults, setNoResults] = useState(false);
 
   const queryParams = new URLSearchParams(location.search);
   const updateSuccess = queryParams.get('update') === 'success';
@@ -28,10 +29,23 @@ const Products = () => {
   }, [getProductsData]);
 
   useEffect(() => {
-    const results = products.filter(product =>
-      product.brand?.toLowerCase().includes(searchInput.toLocaleLowerCase())
-    );
-    setFilteredProducts(results);
+    const trimmedInput = searchInput.trim();
+
+    if (trimmedInput === "") {
+      setFilteredProducts(products);
+      setNoResults(false);
+    } else {
+      const results = products.filter(product =>
+        product.brand?.toLowerCase().includes(trimmedInput.toLowerCase())
+      ); 
+      setFilteredProducts(results);
+      
+      if (results.length === 0) {
+        setNoResults(true);
+      } else {
+        setNoResults(false);
+      }
+    }
   }, [searchInput, products]);
 
   return (
@@ -68,7 +82,12 @@ const Products = () => {
           <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">
             Clothes
           </h1>
-          {filteredProducts.length === 0 ? (
+
+          {noResults && searchInput.trim() !== "" ? (
+            <div className="flex flex-col justify-center gap-4 items-center h-40">
+            <p className="font-mont">Product not found</p>
+          </div>
+          ) : filteredProducts.length === 0 ? (
             <div className="flex flex-col justify-center gap-4 items-center h-40">
               <p className="font-mont">No products are available</p>
               <button

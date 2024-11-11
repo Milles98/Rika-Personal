@@ -2,9 +2,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-
 import { AuthProvider } from "./lib/AuthProvider.jsx";
 import ProtectedRoute from "./lib/ProtectedRoute.jsx";
+import { ProductProvider } from "./lib/ProductProvider.jsx";
 
 import "./assets/css/main.css";
 
@@ -18,7 +18,6 @@ import ProductDetails from "./views/ProductDetails";
 import EditProduct from "./views/EditProduct";
 import CreateProduct from "./views/CreateProduct";
 import Users from "./views/Users";
-import { ProductProvider } from "./lib/ProductProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

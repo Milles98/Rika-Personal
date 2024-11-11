@@ -11,6 +11,8 @@ const Products = () => {
   const { getProductsData } = useProductContext();
   const location = useLocation();
   const [products, setProducts] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([])
 
   const queryParams = new URLSearchParams(location.search);
   const updateSuccess = queryParams.get('update') === 'success';
@@ -18,15 +20,23 @@ const Products = () => {
   const getProducts = async () => {
     const data = await getProductsData();
     setProducts(data);
+    setFilteredProducts(data);
   };
 
   useEffect(() => {
     getProducts();
   }, [getProductsData]);
 
+  useEffect(() => {
+    const results = products.filter(product =>
+      product.brand?.toLowerCase().includes(searchInput.toLocaleLowerCase())
+    );
+    setFilteredProducts(results);
+  }, [searchInput, products]);
+
   return (
     <section className="flex flex-col gap-4">
-      <nav className="flex justify-between">
+      <nav className="flex justify-between items-center space-x-4 sm:space-x-8">
         <div className="flex-none">
           <ArrowBack goBackTo="/" />
         </div>
@@ -37,8 +47,20 @@ const Products = () => {
           </div>
         )}
 
-        <div className="flex-none">
-          <SearchIcon />
+        <div className="flex justify-center w-full py-4">
+          <div className="relative w-full max-w-xs">
+            <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Search..."
+            className="w-auto py-2 pl-12 pr-10 border rounded-lg shadow-lg hover:shadow-xl"
+            />
+            <div className="absolute top-1/2 left-3 transform -translate-y-1/2">
+              <SearchIcon />
+            </div>
+          </div>
+
         </div>
       </nav>
       <div className="flex justify-center w-full">
@@ -46,7 +68,7 @@ const Products = () => {
           <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">
             Clothes
           </h1>
-          {products.length === 0 ? (
+          {filteredProducts.length === 0 ? (
             <div className="flex flex-col justify-center gap-4 items-center h-40">
               <p className="font-mont">No products are available</p>
               <button
@@ -58,7 +80,7 @@ const Products = () => {
             </div>
           ) : (
             <div className="flex gap-[15px] flex-wrap mb-[9px]">
-              {products.map((product) => (
+              {filteredProducts.map((product) => (
                 <ProductCard key={product.id} data={product} />
               ))}
             </div>

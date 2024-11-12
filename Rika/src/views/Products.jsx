@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+import { useProductContext } from "../lib/ProductProvider";
 
 import ArrowBack from "../common/ArrowBack";
 import ProductCard from "./sections/products/ProductCard";
 import SearchIcon from "../assets/icons/SearchIcon";
-import { useLocation } from "react-router-dom";
 import SuccessAlert from "../common/SuccessAlert";
-import { useProductContext } from "../lib/ProductProvider";
 
 const Products = () => {
   const { getProductsData } = useProductContext();

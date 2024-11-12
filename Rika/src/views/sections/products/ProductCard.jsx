@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import BlackFavoriteIcon from "../../../assets/icons/BlackFavoriteIcon";
 
 const ProductCard = ({ data }) => {
-  const {id, brand, image, price, model } = data;
+  const { id, brand, image, price, model } = data;
   const [imageSrc, setImageSrc] = useState(image);
 
   const navigate = useNavigate();
@@ -20,14 +20,13 @@ const ProductCard = ({ data }) => {
         setImageSrc("/No_Product_Image_Available.png");
       }
     };
-   
 
     checkImageUrl();
   }, [image]);
 
   const handleClick = () => {
     navigate(`/productdetails/${id}`);
-  }
+  };
 
   const handleBrokenImage = () => {
     setImageSrc("/No_Product_Image_Available.png");

@@ -17,6 +17,7 @@ const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   let admin = false;
   const { userRole, isAuthenticated, checkAuth } = useContext(AuthContext);
+
   useEffect(() => {
     const authorizeUser = async () => {
       await checkAuth();
@@ -45,7 +46,7 @@ const Navbar = () => {
   return (
     <div className="flex">
       <div className="flex-none">
-        <ArrowBack goBackTo="/" />
+        <ArrowBack goBackTo="/products" />
       </div>
 
       <div className="grow"></div>

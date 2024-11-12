@@ -1,28 +1,8 @@
 import React from "react";
-
-import { useEffect, useState } from "react";
 import HeartIcon from "../../../../assets/icons/HeartIcon";
 import BagWhite from "../../../../assets/icons/BagWhite";
-import { useParams } from "react-router-dom";
-import { useProductContext } from "../../../../lib/ProductProvider";
 
-const Detailssection = () => {
-  const { id } = useParams();
-  const { getProductData } = useProductContext();
-  const [productDetails, setProductDetails] = useState({
-    brand: "",
-    model: "",
-    description: "",
-    price: "",
-  });
-
-  useEffect(() => {
-    const fetchProductDetails = async () => {
-      const data = await getProductData(id);
-      setProductDetails(data);
-    };
-    fetchProductDetails();
-  }, [id]);
+const Detailssection = ({ productDetails }) => {
 
   return (
     <section>

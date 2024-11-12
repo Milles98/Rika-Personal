@@ -68,7 +68,7 @@ const Products = () => {
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Search..."
-            className="w-auto py-2 pl-12 pr-10 border rounded-lg shadow-lg hover:shadow-xl"
+            className="bg-[#F3F4F5] w-auto py-2 pl-12 pr-10 border rounded-full shadow-lg hover:shadow-xl"
             />
             <div className="absolute top-1/2 left-3 transform -translate-y-1/2">
               <SearchIcon />

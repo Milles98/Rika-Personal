@@ -19,7 +19,8 @@ import ProductDetails from "./views/ProductDetails";
 import EditProduct from "./views/EditProduct";
 import CreateProduct from "./views/CreateProduct";
 import Users from "./views/Users";
-import Register from "./views/Register.jsx"
+import Register from "./views/Register.jsx";
+import AllInvoices from "./views/AllInvoices";
 
 
 createRoot(document.getElementById("root")).render(
@@ -52,6 +53,14 @@ createRoot(document.getElementById("root")).render(
                 element={
                   <ProtectedRoute requiredRole="admin">
                     <AdminLandingPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/all-invoices"
+                element={
+                  <ProtectedRoute requiredRole="admin">
+                    <AllInvoices />
                   </ProtectedRoute>
                 }
               />

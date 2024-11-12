@@ -10,6 +10,7 @@ import "./assets/css/main.css";
 
 import Header from "./views/sections/header/Header";
 import Home from "./views/Home";
+import PaymentForm from "./views/payment/PaymentForm";
 import Login from "./views/Login.jsx";
 import CustomerLandingPage from "./views/customerpages/CustomerLandingPage.jsx";
 import AdminLandingPage from "./views/adminpages/AdminLandingPage.jsx";
@@ -34,6 +35,7 @@ createRoot(document.getElementById("root")).render(
               <Route path="/productscreate" element={<CreateProduct />} />
               <Route path="/admin/edit-product/:id" element={<EditProduct />} />
               <Route path="/users" element={<Users />} />
+              <Route path="/paymentform" element={<PaymentForm />} /> 
               <Route
                 path="/customer"
                 element={

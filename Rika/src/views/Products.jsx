@@ -108,7 +108,7 @@ const Products = () => {
         </div>
       )}
 
-      {!deleteSuccess && (
+      {deleteSuccess && (
         <div className="flex-none">
           <SuccessAlert message={"Product was successfully deleted!"} />
         </div>

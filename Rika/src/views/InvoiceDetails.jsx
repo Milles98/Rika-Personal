@@ -9,12 +9,18 @@ const InvoiceDetails = () => {
     useEffect(() => {
         const fetchInvoice = async () => {
             try {
-                const response = await fetch(`/api/invoices/${id}`); 
-                if (!response.ok) {
-                    throw new Error("Failed to fetch invoice");
-                }
-                const data = await response.json();
-                setInvoice(data);
+                // Dummy data för testning
+                const dummyInvoice = {
+                    id: id,
+                    customerName: "John Doe",
+                    date: "2024-11-12",
+                    total: 120.0,
+                    items: [
+                        { name: "Product A", price: 50.0 },
+                        { name: "Product B", price: 70.0 },
+                    ],
+                };
+                setInvoice(dummyInvoice);
             } catch (err) {
                 setError("Invoice not found");
             }
@@ -32,11 +38,11 @@ const InvoiceDetails = () => {
                     <p><strong>Invoice ID:</strong> {invoice.id}</p>
                     <p><strong>Customer:</strong> {invoice.customerName}</p>
                     <p><strong>Date:</strong> {invoice.date}</p>
-                    <p><strong>Total:</strong> ${invoice.total}</p>
+                    <p><strong>Total:</strong> {invoice.total.toFixed(2)} kr</p>
                     <p><strong>Items:</strong></p>
                     <ul>
                         {invoice.items.map((item, index) => (
-                            <li key={index}>{item.name} - ${item.price}</li>
+                            <li key={index}>{item.name} - {item.price.toFixed(2)} kr</li>
                         ))}
                     </ul>
                 </div>

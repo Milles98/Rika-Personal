@@ -12,12 +12,12 @@ const InvoiceDetails = () => {
                 // Dummy data för testning
                 const dummyInvoice = {
                     id: id,
-                    customerName: "John Doe",
+                    customerName: "Richard Chalk",
                     date: "2024-11-12",
                     total: 120.0,
                     items: [
-                        { name: "Product A", price: 50.0 },
-                        { name: "Product B", price: 70.0 },
+                        { name: "Product A", price: 500.0 },
+                        { name: "Product B", price: 700.0 },
                     ],
                 };
                 setInvoice(dummyInvoice);

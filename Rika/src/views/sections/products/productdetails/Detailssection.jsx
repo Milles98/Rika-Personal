@@ -16,7 +16,7 @@ const Detailssection = () => {
     price: 0,
   });
   const [amount, setAmount] = useState(1);
-  const [size, setSize] = useStatese();
+  const [size, setSize] = useState("");
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -34,6 +34,10 @@ const Detailssection = () => {
 
   const handleAdd = () => {
     setAmount(amount + 1);
+  };
+
+  const handleSizeClick = (selectedSize) => {
+    setSize(selectedSize);
   };
 
   return (
@@ -71,13 +75,28 @@ const Detailssection = () => {
         </h1>
         <div className="flex justify-center">
           <div className="flex gap-4 py-4">
-            <button className="bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-4 rounded-full">
+            <button
+              onClick={() => handleSizeClick("S")}
+              className={`${
+                size === "S" ? "bg-black text-white" : "bg-white text-black"
+              } border-2 hover:bg-black hover:text-white font-bold py-2 px-4 rounded-full`}
+            >
               S
             </button>
-            <button className="bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-3 rounded-full">
+            <button
+              onClick={() => handleSizeClick("M")}
+              className={`${
+                size === "M" ? "bg-black text-white" : "bg-white text-black"
+              } border-2 hover:bg-black hover:text-white font-bold py-2 px-3 rounded-full`}
+            >
               M
             </button>
-            <button className="bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-4 rounded-full">
+            <button
+              onClick={() => handleSizeClick("L")}
+              className={`${
+                size === "L" ? "bg-black text-white" : "bg-white text-black"
+              } border-2 hover:bg-black hover:text-white font-bold py-2 px-4 rounded-full`}
+            >
               L
             </button>
           </div>

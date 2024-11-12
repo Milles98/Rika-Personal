@@ -11,8 +11,8 @@ const AllInvoices = () => {
             try {
                 // Dummy data för testning
                 const dummyInvoices = [
-                    { id: 1, customerName: "John Doe", date: "2024-11-12", total: 120.0 },
-                    { id: 2, customerName: "Jane Smith", date: "2024-11-11", total: 85.5 },
+                    { id: 1, customerName: "Richard Chalk", date: "2024-11-12", total: 1000 },
+                    { id: 2, customerName: "Hans Mattin-Lassei", date: "2024-11-11", total: 1500 },
                 ];
                 
                 // Lägg till "kr" till totalbeloppet

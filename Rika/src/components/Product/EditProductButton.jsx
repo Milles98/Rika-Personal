@@ -11,11 +11,9 @@ const EditProductButton = ({ label = "Edit", productId }) => {
     }
 
     return (
-        <div className="pb-1">
-            <button onClick={handleClick} className="bg-black text-white font-bold px-3 py-1 lg:py-2 lg:px-4 rounded-full border border-black hover:bg-white hover:text-black transition-colors duration-300">
-                {label}
-            </button>
-        </div>
+        <button onClick={handleClick} className="bg-black text-white font-bold px-3 py-1 lg:py-2 lg:px-4 rounded-full border border-black hover:bg-white hover:text-black transition-colors duration-300">
+            {label}
+        </button>
     );
 };
 

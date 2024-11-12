@@ -25,8 +25,22 @@ export const ShippingProvider = ({ children }) => {
         }
     };
 
+    //Fetch Transit Times from API
+    const getTransitTimes = async (destinationPostalCode) => {
+        try {
+            const response = await fetch(`https://shoppingprovider-d5dgaegpcmgugphy.westeurope-01.azurewebsites.net/Shipping/TransitTimes?DestinationPostalCode=${destinationPostalCode}`);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (err) {
+            console.log(err);
+            return null;
+        }
+    };
+
     return (
-        <ShippingContext.Provider value={{ getServicePoints, notFound }}>
+        <ShippingContext.Provider value={{ getServicePoints, getTransitTimes, notFound }}>
             {children}
         </ShippingContext.Provider>
     );

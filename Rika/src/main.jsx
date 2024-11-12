@@ -19,6 +19,8 @@ import ProductDetails from "./views/ProductDetails";
 import EditProduct from "./views/EditProduct";
 import CreateProduct from "./views/CreateProduct";
 import Users from "./views/Users";
+import Register from "./views/Register.jsx"
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -35,6 +37,7 @@ createRoot(document.getElementById("root")).render(
               <Route path="/productscreate" element={<CreateProduct />} />
               <Route path="/admin/edit-product/:id" element={<EditProduct />} />
               <Route path="/users" element={<Users />} />
+              <Route path="/register" element={<Register />} />
               <Route path="/paymentform" element={<PaymentForm />} /> 
               <Route
                 path="/customer"

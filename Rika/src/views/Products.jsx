@@ -99,14 +99,6 @@ const Products = () => {
             </div>
           </div>
 
-
-        {deleteSuccess && (
-          <div className="flex-none">
-            <SuccessAlert message={"Product was successfully deleted!"} />
-          </div>
-        )}
-
-
         </div>
       </nav>
 
@@ -115,6 +107,13 @@ const Products = () => {
           {errorMessage}
         </div>
       )}
+
+      {!deleteSuccess && (
+        <div className="flex-none">
+          <SuccessAlert message={"Product was successfully deleted!"} />
+        </div>
+      )}
+
       <div className="flex justify-center w-full">
         <div className="flex flex-col gap-3 max-w-[835px]">
           <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">

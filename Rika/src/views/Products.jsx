@@ -7,6 +7,7 @@ import ArrowBack from "../common/ArrowBack";
 import ProductCard from "./sections/products/ProductCard";
 import SearchIcon from "../assets/icons/SearchIcon";
 import SuccessAlert from "../common/SuccessAlert";
+import SortIcon from "../assets/icons/SortIcon"
 
 const Products = () => {
   const { getProductsData } = useProductContext();
@@ -16,6 +17,8 @@ const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [sortOption, setSortOption] = useState("default");
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
   const queryParams = new URLSearchParams(location.search);
   const updateSuccess = queryParams.get("update") === "success";
@@ -31,6 +34,26 @@ const Products = () => {
   }, [getProductsData]);
 
   useEffect(() => {
+    let sortedProducts = [...products];
+    if (sortOption === "priceAsc") {
+      sortedProducts.sort((a, b) => a.price - b.price);
+    } else if (sortOption === "priceDesc") {
+      sortedProducts.sort((a, b) => b.price - a.price);
+    } else if (sortOption === "nameAsc") {
+      sortedProducts.sort((a, b) => a.brand.localeCompare(b.brand));
+    } else if (sortOption === "nameDesc") {
+      sortedProducts.sort((a, b) => b.brand.localeCompare(a.brand));
+    }
+    setFilteredProducts(sortedProducts);
+  }, [sortOption, products]);
+
+  const handleSortChange = (option) => {
+    setSortOption(option);
+    setIsSortDropdownOpen(false);
+  };
+
+
+  useEffect(() => {
     const trimmedInput = searchInput.trim();
 
     if (trimmedInput === "") {
@@ -39,9 +62,9 @@ const Products = () => {
     } else {
       const results = products.filter(product =>
         product.brand?.toLowerCase().includes(trimmedInput.toLowerCase())
-      ); 
+      );
       setFilteredProducts(results);
-      
+
       if (results.length === 0) {
         setNoResults(true);
       } else {
@@ -87,16 +110,56 @@ const Products = () => {
         <div className="flex justify-center w-full py-4">
           <div className="relative w-full max-w-xs">
             <input
-            type="text"
-            value={searchInput}
-            onChange={handleInputChange} 
-            onKeyDown={handleSearchKeyDown}
-            placeholder="Search..."
-            className="bg-[#F3F4F5] w-auto py-2 pl-12 pr-10 border rounded-full shadow-lg hover:shadow-xl"
+              type="text"
+              value={searchInput}
+              onChange={handleInputChange}
+              onKeyDown={handleSearchKeyDown}
+              placeholder="Search..."
+              className="bg-[#F3F4F5] w-auto py-2 pl-12 pr-10 border rounded-full shadow-lg hover:shadow-xl"
             />
             <div className="absolute top-1/2 left-3 transform -translate-y-1/2">
               <SearchIcon />
             </div>
+            <div
+              className="absolute top-1/3 right-2 transform -translate-y-1/2 cursor-pointer rounded-full p-2"
+              onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+            >
+              <div className="w-6 h-9 ">
+                <SortIcon className="" />
+              </div>
+            </div>
+            {isSortDropdownOpen && (
+              <div className="absolute right-0 mt-15 w-25 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={() => handleSortChange("priceDesc")}
+                >
+                  Price: High to Low
+                </button>
+
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={() => handleSortChange("priceAsc")}
+                >
+                  Price: Low to High
+                </button>
+                
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={() => handleSortChange("nameAsc")}
+                >
+                  Name: A-Z
+                </button>
+
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={() => handleSortChange("nameDesc")}
+                >
+                  Name: Z-A
+                </button>
+              </div>
+            )}
           </div>
 
         </div>
@@ -122,8 +185,8 @@ const Products = () => {
 
           {noResults && searchInput.trim() !== "" ? (
             <div className="flex flex-col justify-center gap-4 items-center h-40">
-            <p className="font-mont">Product not found</p>
-          </div>
+              <p className="font-mont">Product not found</p>
+            </div>
           ) : filteredProducts.length === 0 ? (
             <div className="flex flex-col justify-center gap-4 items-center h-40">
               <p className="font-mont">No products are available</p>

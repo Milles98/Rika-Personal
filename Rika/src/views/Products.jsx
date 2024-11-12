@@ -205,7 +205,7 @@ const Products = () => {
               </button>
             </div>
           ) : (
-            <div className="flex gap-[15px] flex-wrap mb-[9px]">
+            <div className="flex justify-center gap-[15px] flex-wrap mb-[9px]">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} data={product} />
               ))}

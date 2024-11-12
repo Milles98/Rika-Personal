@@ -7,6 +7,7 @@ import InputField from './sections/AdminCreateProduct/InputField.jsx';
 const Register = () => {
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const apiUrl = 'https://rika-identity-user-f5e3fddxg4bve2eg.swedencentral-01.azurewebsites.net/Customer/Register'
 
     const [formData, setFormData] = useState({
         username: '',
@@ -18,6 +19,16 @@ const Register = () => {
         city: '',
         dateOfBirth: ''
     });
+
+    const nameMapping = {
+        username: 'Username',
+        email: 'Email',
+        password: 'Password',
+        phoneNumber: 'PhoneNumber',
+        streetAddress: 'StreetAddress',
+        city: 'City',
+        dateOfBirth: 'DateOfBirth',
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -34,14 +45,14 @@ const Register = () => {
         if (!formData.username) errors.username = "User Name is required.";
         if (!formData.email) errors.email = "Email is required.";
         else if (!validateEmail(formData.email)) {
-            errors.email = "Follow the email pattern.";
+            errors.email = "Please enter a valid email.";
         }
         if (!formData.password) {
             errors.password = "Password is required.";
-        } else if (formData.password.length < 6) {
-            errors.password = "Password must be at least 6 characters.";
         } else if (formData.password !== formData.confirmpassword) {
             errors.password = "Passwords do not match.";
+        } else if (formData.password.length < 6) {
+            errors.password = "Password must be at least 6 characters.";
         }
         if (!formData.phoneNumber) errors.phoneNumber = "Phone Number is required.";
         if (!formData.streetAddress) errors.streetAddress = "Street Address is required.";
@@ -56,9 +67,14 @@ const Register = () => {
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
-            const endPoint = '/Customer/register';
             try {
-                const response = await identityApi.post(endPoint, formData);
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
                 if (response.status === 200) {
                     console.log('Customer successfully created!');
                     navigate('/');
@@ -68,8 +84,19 @@ const Register = () => {
 
                     if (data.errors) {
                         Object.keys(data.errors).forEach((field) => {
-                            apiErrors[field] = errors[field].join(' ');
+
+                            const formField = Object.keys(nameMapping).find((key) => nameMapping[key] === field);
+
+                            if (formField){
+                                apiErrors[formField] = data.errors[field].join(' ');
+                            }
                         });
+                    }
+                    console.log(data.password)
+                    if(data.password){
+                        Object.keys(data.password).forEach((field) => {
+                            apiErrors.password = data.password[field];
+                        })
                     }
                     setErrors(apiErrors);
                 }
@@ -80,7 +107,7 @@ const Register = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-300 p-4">
+        <div className="flex font-mont items-center justify-center min-h-screen bg-gray-300 p-4">
             <form
                 onSubmit={(e) => handleRegistration(e, formData)}
                 className="bg-white p-6 sm:p-8 md:p-10 rounded-lg shadow-md w-full sm:w-96 md:w-2/3 lg:w-1/2 xl:w-1/3"

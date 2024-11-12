@@ -14,8 +14,8 @@ const Products = () => {
   const [products, setProducts] = useState([]);
 
   const queryParams = new URLSearchParams(location.search);
-  const updateSuccess = queryParams.get("update") === "success";
-
+  const updateSuccess = queryParams.get('update') === 'success';
+  const deleteSuccess = queryParams.get('delete') === 'success';
   const getProducts = async () => {
     const data = await getProductsData();
     setProducts(data);
@@ -37,7 +37,11 @@ const Products = () => {
             <SuccessAlert message={"Product was successfully updated!"} />
           </div>
         )}
-
+        {deleteSuccess && (
+          <div className="flex-none">
+            <SuccessAlert message={"Product was successfully deleted!"} />
+          </div>
+        )}
         <div className="flex-none">
           <SearchIcon />
         </div>

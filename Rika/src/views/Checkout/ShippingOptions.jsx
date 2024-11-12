@@ -4,15 +4,17 @@ import { useState, } from 'react';
 import { useShippingContext } from "../../lib/ShippingOptionsProvider";
 
 const ShippingOptions = () => {
-    const { getServicePoints } = useShippingContext();
+    const { getServicePoints, getTransitTimes } = useShippingContext();
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         postalCode: '',
     });
     const [servicePoints, setServicePoints] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState(null);
+    const [selectedDeliveryOption, setSelectedDeliveryOption] = useState(null);
     const [loading, setLoading] = useState(false);
     const [isConfirmed, setIsConfirmed] = useState(false);
+    const [transitTime, setTransitTime] = useState([]);
 
     const validate = () => {
         const errors = {};
@@ -59,14 +61,31 @@ const ShippingOptions = () => {
         }
     };
 
-    const handleCardClick = (servicePoint) => {
+    const handleCardClick = async (servicePoint) => {
         setSelectedLocation(servicePoint);
         console.log("Selected service point:", servicePoint);
+
+        try {
+            const transitData = await getTransitTimes(servicePoint.visitingAddress.postalCode);
+            console.log("Transit time data:", transitData);
+            setTransitTime(transitData || []);
+        } catch (error) {
+            console.error("Error fetching transit times:", error);
+            setTransitTime([]);
+        }
     };
 
+    const handleDeliveryOption = (option) => {
+        setSelectedDeliveryOption(option);
+    };
+
+
     const handleConfirm = () => {
-        setIsConfirmed(true);
-        setSelectedLocation(null);
+        if (selectedDeliveryOption) {
+            setIsConfirmed(true);
+            console.log("Delivery confirmed:", selectedLocation, selectedDeliveryOption);
+            setSelectedLocation(null);
+        }
     };
 
     //Implement real navigation here
@@ -139,14 +158,42 @@ const ShippingOptions = () => {
                             <strong>Address:</strong> {`${selectedLocation.visitingAddress?.streetName}, ${selectedLocation.visitingAddress?.streetNumber} ${selectedLocation.visitingAddress?.city}`}
                         </p>
                         <p><strong>Service Point ID:</strong> {selectedLocation.servicePointId}</p>
+
+                        {/* Transit Time Information */}
+                        {transitTime && transitTime.length > 0 ? (
+                            <div className="mt-4">
+                                <p className="mb-1 text-gray-800"><strong>Delivery Options:</strong></p>
+                                <ul className="space-y-2">
+                                    {transitTime
+                                        .filter((_, index) => [3, 5, 8, 9].includes(index))
+                                        .map((time, index) => (
+                                            <li
+                                                key={index}
+                                                onClick={() => handleDeliveryOption(time)}
+                                                className={`p-2 border rounded cursor-pointer shadow hover:bg-green-200 ${selectedDeliveryOption === time ? "bg-green-200 border-green-500" : "bg-gray-100"
+                                                    }`}
+                                            >
+                                                <p><strong>Type:</strong> {time.serviceInformation?.name || "N/A"}</p>
+                                                <p><strong>Arrival:</strong> {new Date(time.timeOfArrival).toLocaleDateString()}</p>
+                                            </li>
+                                        ))}
+                                </ul>
+                            </div>
+                        ) : (
+                            <p className="mt-4 text-red-500">Transit time information is unavailable.</p>
+                        )}
+
+
+
                         <button
                             onClick={handleConfirm}
-                            className="mt-4 w-full bg-green-800 text-white p-2 rounded hover:bg-gray-800">
-                            Confirm
+                            className={`mt-4 w-full bg-green-800 text-white p-2 rounded hover:bg-gray-800`}>
+                            Confirm Delivery
                         </button>
                     </div>
                 </div>
             )}
+
 
             {/* Proceed to Payment Button */}
             <div className="w-full max-w-md mt-3">

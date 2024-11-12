@@ -1,10 +1,10 @@
-import React from "react";
-
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import { useProductContext } from "../../../../lib/ProductProvider";
+
 import HeartIcon from "../../../../assets/icons/HeartIcon";
 import BagWhite from "../../../../assets/icons/BagWhite";
-import { useParams } from "react-router-dom";
-import { useProductContext } from "../../../../lib/ProductProvider";
 
 const Detailssection = () => {
   const { id } = useParams();
@@ -13,8 +13,10 @@ const Detailssection = () => {
     brand: "",
     model: "",
     description: "",
-    price: "",
+    price: 0,
   });
+  const [amount, setAmount] = useState(1);
+  const [size, setSize] = useState("");
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -23,6 +25,20 @@ const Detailssection = () => {
     };
     fetchProductDetails();
   }, [id]);
+
+  const handleSub = () => {
+    if (amount > 1) {
+      setAmount(amount - 1);
+    }
+  };
+
+  const handleAdd = () => {
+    setAmount(amount + 1);
+  };
+
+  const handleSizeClick = (selectedSize) => {
+    setSize(selectedSize);
+  };
 
   return (
     <section>
@@ -33,14 +49,16 @@ const Detailssection = () => {
           </h1>
           <p className="font-mont text-[#666666]">{productDetails.model}</p>
           <p className="font-mont text-[#666666]">
-            Price: {productDetails.price}
+            Price: ${productDetails.price.toFixed(2)}
           </p>
         </div>
         <div className="grow"></div>
-        <div className="flex-none">
-          <button className="bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded-full">
-            - 1 +
-          </button>
+        <div className="flex items-center justify-evenly w-[70px] h-[30px] rounded-[30px] px-1 bg-[#EEEEEE]">
+          <button onClick={() => handleSub()}>-</button>
+          <span className="font-mont font-medium min-w-5 text-center">
+            {amount}
+          </span>
+          <button onClick={() => handleAdd()}>+</button>
         </div>
       </div>
 
@@ -57,13 +75,28 @@ const Detailssection = () => {
         </h1>
         <div className="flex justify-center">
           <div className="flex gap-4 py-4">
-            <button className="bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-4 rounded-full">
+            <button
+              onClick={() => handleSizeClick("S")}
+              className={`${
+                size === "S" ? "bg-black text-white" : "bg-white text-black"
+              } border-2 hover:bg-black hover:text-white font-bold py-2 px-4 rounded-full`}
+            >
               S
             </button>
-            <button className="bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-3 rounded-full">
+            <button
+              onClick={() => handleSizeClick("M")}
+              className={`${
+                size === "M" ? "bg-black text-white" : "bg-white text-black"
+              } border-2 hover:bg-black hover:text-white font-bold py-2 px-3 rounded-full`}
+            >
               M
             </button>
-            <button className="bg-white border-2 hover:bg-black hover:text-white text-black font-bold py-2 px-4 rounded-full">
+            <button
+              onClick={() => handleSizeClick("L")}
+              className={`${
+                size === "L" ? "bg-black text-white" : "bg-white text-black"
+              } border-2 hover:bg-black hover:text-white font-bold py-2 px-4 rounded-full`}
+            >
               L
             </button>
           </div>

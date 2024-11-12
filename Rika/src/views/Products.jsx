@@ -14,8 +14,8 @@ const Products = () => {
   const [products, setProducts] = useState([]);
 
   const queryParams = new URLSearchParams(location.search);
-  const updateSuccess = queryParams.get('update') === 'success';
-  const deleteSuccess = queryParams.get('delete') === 'success';
+  const updateSuccess = queryParams.get("update") === "success";
+  const deleteSuccess = queryParams.get("delete") === "success";
   const getProducts = async () => {
     const data = await getProductsData();
     setProducts(data);

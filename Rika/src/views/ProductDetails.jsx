@@ -1,15 +1,15 @@
-import React from 'react'
-import ImageSection from './sections/productdetails/ImageSection'
-import Navbar from './sections/productdetails/NavBar'
-import Detailssection from './sections/productdetails/Detailssection'
-const ProductDetails = () => {
-    return (
-        <>
-            <Navbar />
-            <ImageSection />
-            <Detailssection />
-        </>
-    )
-}
+import ImageSection from "./sections/products/productdetails/ImageSection";
+import Navbar from "./sections/products/productdetails/NavBar";
+import Detailssection from "./sections/products/productdetails/Detailssection";
 
-export default ProductDetails
+const ProductDetails = () => {
+  return (
+    <>
+      <Navbar />
+      <ImageSection />
+      <Detailssection />
+    </>
+  );
+};
+
+export default ProductDetails;

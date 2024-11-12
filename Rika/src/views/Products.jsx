@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+import { useProductContext } from "../lib/ProductProvider";
 
 import ArrowBack from "../common/ArrowBack";
 import ProductCard from "./sections/products/ProductCard";
 import SearchIcon from "../assets/icons/SearchIcon";
-import { useLocation } from "react-router-dom";
 import SuccessAlert from "../common/SuccessAlert";
-import { useProductContext } from "../lib/ProductProvider";
 
 const Products = () => {
   const { getProductsData } = useProductContext();
@@ -17,8 +18,8 @@ const Products = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const queryParams = new URLSearchParams(location.search);
-  const updateSuccess = queryParams.get('update') === 'success';
-
+  const updateSuccess = queryParams.get("update") === "success";
+  const deleteSuccess = queryParams.get("delete") === "success";
   const getProducts = async () => {
     const data = await getProductsData();
     setProducts(data);
@@ -82,6 +83,7 @@ const Products = () => {
           </div>
         )}
 
+
         <div className="flex justify-center w-full py-4">
           <div className="relative w-full max-w-xs">
             <input
@@ -96,6 +98,14 @@ const Products = () => {
               <SearchIcon />
             </div>
           </div>
+
+
+        {deleteSuccess && (
+          <div className="flex-none">
+            <SuccessAlert message={"Product was successfully deleted!"} />
+          </div>
+        )}
+
 
         </div>
       </nav>

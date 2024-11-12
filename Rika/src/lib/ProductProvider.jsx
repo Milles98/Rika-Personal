@@ -119,10 +119,10 @@ export const ProductProvider = ({ children }) => {
             if (!response.ok) {
                 throw new Error(`Failed to delete product: ${response.status} ${response.statusText}`);
             }
-            return { success: true };
+            return true;
         } catch (err) {
             console.error("Error deleting product:", err);
-            return { success: false, message: err.message };
+            return false;
         }
     };
 

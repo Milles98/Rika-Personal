@@ -14,6 +14,7 @@ const Products = () => {
   const [searchInput, setSearchInput] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [noResults, setNoResults] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const queryParams = new URLSearchParams(location.search);
   const updateSuccess = queryParams.get('update') === 'success';
@@ -48,6 +49,26 @@ const Products = () => {
     }
   }, [searchInput, products]);
 
+  const handleSearchKeyDown = (e) => {
+    if (e.key === "Enter") {
+      const trimmedInput = searchInput.trim();
+      if (trimmedInput === "") {
+        setErrorMessage("Search cannot be empty.");
+      } else {
+        setErrorMessage("");
+      }
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchInput(value);
+
+    if (value.trim() !== "") {
+      setErrorMessage("");
+    }
+  };
+
   return (
     <section className="flex flex-col gap-4">
       <nav className="flex justify-between items-center space-x-4 sm:space-x-8">
@@ -66,7 +87,8 @@ const Products = () => {
             <input
             type="text"
             value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            onChange={handleInputChange} 
+            onKeyDown={handleSearchKeyDown}
             placeholder="Search..."
             className="bg-[#F3F4F5] w-auto py-2 pl-12 pr-10 border rounded-full shadow-lg hover:shadow-xl"
             />
@@ -77,6 +99,12 @@ const Products = () => {
 
         </div>
       </nav>
+
+      {errorMessage && (
+        <div className="text-gray-600 text-center font-mont mt-2">
+          {errorMessage}
+        </div>
+      )}
       <div className="flex justify-center w-full">
         <div className="flex flex-col gap-3 max-w-[835px]">
           <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">

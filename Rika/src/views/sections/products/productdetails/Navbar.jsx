@@ -1,12 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import ArrowBack from "../../../../common/ArrowBack";
-import ShoppingCartIcon from "../../../../assets/icons/ShoppingCartIcon";
-import EditProductButton from "../../../../components/Product/EditProductButton";
-import DeleteProductModal from "../../../../components/Product/DeleteProductModal";
-import DeleteProductButton from "../../../../components/Product/DeleteProductButton";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import { AuthContext } from "../../../../lib/AuthProvider";
 import { useProductContext } from "../../../../lib/ProductProvider";
+
+import ArrowBack from "../../../../common/ArrowBack";
+import ShoppingCartIcon from "../../../../assets/icons/ShoppingCartIcon";
+import EditButton from "../../../../common/EditButton";
+import DeleteModal from "../../../../common/delete/DeleteModal";
+import DeleteButton from "../../../../common/delete/DeleteButton";
 
 const Navbar = () => {
   const { id } = useParams();
@@ -51,13 +53,16 @@ const Navbar = () => {
         {admin ? (
           <div>
             <div className="pb-1 space-x-1">
-              <EditProductButton label="Edit Product" productId={id} />
-              <DeleteProductButton clickFunction={() => setIsModalOpen(true)} />
+              <EditButton label="Edit Product" productId={id} />
+              <DeleteButton clickFunction={() => setIsModalOpen(true)} />
             </div>
-            <DeleteProductModal
+            <DeleteModal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
               onConfirm={handleDelete}
+              modelMessage={
+                "Do you really want to delete this item? This action cannot be undone."
+              }
             />
           </div>
         ) : (

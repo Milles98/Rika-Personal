@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import ArrowBack from "../common/ArrowBack";
+import SearchIcon from "../assets/icons/SearchIcon";
 
 const AllInvoices = () => {
-    const [invoices, setInvoices] = useState([]); // Lista över fakturor
-    const [error, setError] = useState(""); // För att visa felmeddelanden
+    const [invoices, setInvoices] = useState([]);
+    const [filteredInvoices, setFilteredInvoices] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [error, setError] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchInvoices = async () => {
             try {
-                // Dummy data för testning
                 const dummyInvoices = [
                     { id: 1, customerName: "Richard Chalk", date: "2024-11-12", total: 1000 },
                     { id: 2, customerName: "Hans Mattin-Lassei", date: "2024-11-11", total: 1500 },
                 ];
-                
-                // Lägg till "kr" till totalbeloppet
                 setInvoices(dummyInvoices.map(invoice => ({ ...invoice, total: `${invoice.total} kr` })));
+                setFilteredInvoices(dummyInvoices.map(invoice => ({ ...invoice, total: `${invoice.total} kr` })));
             } catch (err) {
                 setError("No invoices found");
             }
@@ -25,47 +27,73 @@ const AllInvoices = () => {
         fetchInvoices();
     }, []);
 
+    const handleSearch = (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTerm(searchTerm);
+        setFilteredInvoices(
+            invoices.filter(invoice =>
+                invoice.customerName.toLowerCase().includes(searchTerm) ||
+                invoice.id.toString().includes(searchTerm)
+            )
+        );
+    };
+
     return (
-        <div className="container mx-auto px-4 py-6">
-            <h1 className="text-3xl font-bold mb-6">All Invoices</h1>
+        <div className="container mx-auto px-4 py-8">
+            <ArrowBack goBackTo="/admin" className="mb-4" />
+            <h1 className="text-3xl font-bold text-center mb-6">All Invoices</h1>
 
-            {/* Visa felmeddelande om något går fel */}
-            {error && <p className="text-red-500 mb-4">{error}</p>}
+            <div className="mb-6 flex justify-center">
+                <div className="relative w-full max-w-md">
+                    <input
+                        type="text"
+                        placeholder="Search invoice..."
+                        value={searchTerm}
+                        onChange={handleSearch}
+                        className="px-10 py-2 border border-gray-300 rounded-full w-full focus:outline-none focus:ring-1 focus:ring-gray-300 bg-[#F3F4F5]"
+                    />
+                    <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                        <SearchIcon />
+                    </div>
+                </div>
+            </div>
 
-            {/* Kontrollera om det finns fakturor att visa */}
-            {invoices.length > 0 ? (
-                <table className="table-auto border-collapse border border-gray-400 w-full">
-                    <thead>
-                        <tr>
-                            <th className="border border-gray-300 px-4 py-2">Invoice ID</th>
-                            <th className="border border-gray-300 px-4 py-2">Customer</th>
-                            <th className="border border-gray-300 px-4 py-2">Date</th>
-                            <th className="border border-gray-300 px-4 py-2">Total</th>
-                            <th className="border border-gray-300 px-4 py-2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {/* Iterera genom fakturor och rendera en rad för varje */}
-                        {invoices.map((invoice) => (
-                            <tr key={invoice.id}>
-                                <td className="border border-gray-300 px-4 py-2">{invoice.id}</td>
-                                <td className="border border-gray-300 px-4 py-2">{invoice.customerName}</td>
-                                <td className="border border-gray-300 px-4 py-2">{invoice.date}</td>
-                                <td className="border border-gray-300 px-4 py-2">{invoice.total}</td>
-                                <td className="border border-gray-300 px-4 py-2">
-                                    <button
-                                        onClick={() => navigate(`/invoices/${invoice.id}`)}
-                                        className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700"
-                                    >
-                                        View Details
-                                    </button>
-                                </td>
+            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+            {filteredInvoices.length > 0 ? (
+                <div className="overflow-x-auto">
+                    <table className="w-full border border-gray-200 rounded-lg">
+                        <thead className="bg-gray-100">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 border-b">Invoice ID</th>
+                                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 border-b">Customer</th>
+                                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 border-b">Date</th>
+                                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 border-b">Total</th>
+                                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 border-b">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                            {filteredInvoices.map((invoice) => (
+                                <tr key={invoice.id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 text-sm text-gray-700">{invoice.id}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-700">{invoice.customerName}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-700">{invoice.date}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-700 font-semibold">{invoice.total}</td>
+                                    <td className="px-6 py-4 text-sm">
+                                        <button
+                                            onClick={() => navigate(`/invoices/${invoice.id}`)}
+                                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-150"
+                                        >
+                                            View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             ) : (
-                <p className="text-gray-600">No invoices available</p>
+                <p className="text-gray-600 text-center mt-4">No invoices available</p>
             )}
         </div>
     );

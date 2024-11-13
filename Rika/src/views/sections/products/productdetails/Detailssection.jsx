@@ -14,10 +14,11 @@ const Detailssection = () => {
     model: "",
     description: "",
     price: 0,
-    size: []
+    size: [],
+    image: "/No_Product_Image_Available.png",
   });
 
-  const [amount, setAmount] = useState(1);
+  const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
   const [sizeError, setSizeError] = useState("");
 
@@ -30,27 +31,42 @@ const Detailssection = () => {
   }, [id]);
 
   const handleSub = () => {
-    if (amount > 1) {
-      setAmount(amount - 1);
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
     }
   };
 
   const handleAdd = () => {
-    setAmount(amount + 1);
+    setQuantity(quantity + 1);
   };
 
   const handleSizeClick = (sizeOption) => {
-    if(size === sizeOption){
+    if (size === sizeOption) {
       setSize("");
-    }
-    else if (productDetails.size.includes(sizeOption)) {
+    } else if (productDetails.size.includes(sizeOption)) {
       setSize(sizeOption);
       setSizeError("");
-    }
-    else {
+    } else {
       setSizeError("This size is not available right now");
     }
+  };
 
+  const addToCart = () => {
+    const cartItem = {
+      id,
+      brand: productDetails.brand,
+      model: productDetails.model,
+      price: productDetails.price,
+      size,
+      image: productDetails.image,
+      quantity,
+    };
+
+    const existingCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    existingCart.push(cartItem);
+    localStorage.setItem("cartItems", JSON.stringify(existingCart));
+    window.dispatchEvent(new Event("cartUpdated"));
   };
 
   return (
@@ -69,7 +85,7 @@ const Detailssection = () => {
         <div className="flex items-center justify-evenly w-[70px] h-[30px] rounded-[30px] px-1 bg-[#EEEEEE]">
           <button onClick={() => handleSub()}>-</button>
           <span className="font-mont font-medium min-w-5 text-center">
-            {amount}
+            {quantity}
           </span>
           <button onClick={() => handleAdd()}>+</button>
         </div>
@@ -87,23 +103,27 @@ const Detailssection = () => {
           <button
             key={sizeOption}
             onClick={() => handleSizeClick(sizeOption)}
-            className={`${size === sizeOption ? "bg-black text-white" : "bg-white text-black"
-              } border-2 hover:bg-black hover:text-white font-bold py-2 px-4 rounded-full`}
+            className={`${
+              size === sizeOption
+                ? "bg-black text-white"
+                : "bg-white text-black"
+            } border-2 hover:bg-black hover:text-white font-bold py-2 px-4 rounded-full`}
           >
             {sizeOption}
           </button>
         ))}
       </div>
-      <div>
-        {sizeError && <p className="text-red-500">{sizeError}</p>}
-      </div>
+      <div>{sizeError && <p className="text-red-500">{sizeError}</p>}</div>
 
       <div className="flex gap-4 px-4 py-6">
         <button className="bg-[#ebebeb] rounded-xl px-3 py-3">
           <HeartIcon />
         </button>
         <div className="grow"></div>
-        <button className="flex gap-3 items-center rounded-2xl bg-black text-white font-mont px-3">
+        <button
+          onClick={addToCart}
+          className="flex gap-3 items-center rounded-2xl bg-black text-white font-mont px-3"
+        >
           <BagWhite /> Add to cart
         </button>
       </div>

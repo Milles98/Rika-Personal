@@ -21,6 +21,7 @@ const ReturnFromPayment = () => {
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
+                console.log(data.status)
 
                 if (data.status === 'complete') {
                     sessionStorage.setItem(`emailSent-${sessionId}`, 'true');

@@ -12,6 +12,7 @@ import SortIcon from "../assets/icons/SortIcon"
 const Products = () => {
   const { getProductsData } = useProductContext();
   const location = useLocation();
+
   const [products, setProducts] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -213,6 +214,12 @@ const Products = () => {
               {filteredProducts.slice(0, loadedCount).map((product) => (
                 <ProductCard key={product.id} data={product} />
               ))}
+            </div>
+          )}
+
+          {filteredProducts.length > 0 && (
+            <div className="text-center text-gray-600 font-mont mt-2" >
+              {Math.min(loadedCount, filteredProducts.length)} of {filteredProducts.length} products showing
             </div>
           )}
 

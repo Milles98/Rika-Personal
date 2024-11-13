@@ -19,14 +19,18 @@ const Products = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [sortOption, setSortOption] = useState("default");
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const [loadedCount, setLoadedCount] = useState(20);
+  const [totalProducts, setTotalProducts] = useState(0)
 
   const queryParams = new URLSearchParams(location.search);
   const updateSuccess = queryParams.get("update") === "success";
   const deleteSuccess = queryParams.get("delete") === "success";
+
   const getProducts = async () => {
     const data = await getProductsData();
     setProducts(data);
-    setFilteredProducts(data);
+    setFilteredProducts(data.slice(0, loadedCount));
+    setTotalProducts(data.length);
   };
 
   useEffect(() => {
@@ -44,26 +48,20 @@ const Products = () => {
     } else if (sortOption === "nameDesc") {
       sortedProducts.sort((a, b) => b.brand.localeCompare(a.brand));
     }
-    setFilteredProducts(sortedProducts);
-  }, [sortOption, products]);
-
-  const handleSortChange = (option) => {
-    setSortOption(option);
-    setIsSortDropdownOpen(false);
-  };
-
+    setFilteredProducts(sortedProducts.slice(0, loadedCount));
+  }, [sortOption, products, loadedCount]);
 
   useEffect(() => {
     const trimmedInput = searchInput.trim();
 
     if (trimmedInput === "") {
-      setFilteredProducts(products);
+      setFilteredProducts(products.slice(0, loadedCount));
       setNoResults(false);
     } else {
       const results = products.filter(product =>
         product.brand?.toLowerCase().includes(trimmedInput.toLowerCase())
       );
-      setFilteredProducts(results);
+      setFilteredProducts(results.slice(0, loadedCount));
 
       if (results.length === 0) {
         setNoResults(true);
@@ -71,7 +69,16 @@ const Products = () => {
         setNoResults(false);
       }
     }
-  }, [searchInput, products]);
+  }, [searchInput, products, loadedCount]);
+
+  const handleSortChange = (option) => {
+    setSortOption(option);
+    setIsSortDropdownOpen(false);
+  };
+
+  const handleLoadMore = () => {
+    setLoadedCount(prevCount => prevCount + 20);
+  }
 
   const handleSearchKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -105,7 +112,6 @@ const Products = () => {
             <SuccessAlert message={"Product was successfully updated!"} />
           </div>
         )}
-
 
         <div className="flex justify-center w-full py-4">
           <div className="relative w-full max-w-xs">
@@ -211,6 +217,18 @@ const Products = () => {
               ))}
             </div>
           )}
+
+          {filteredProducts.length < totalProducts && (
+            <div className="flex justify-center">
+              <button
+                onClick={handleLoadMore}
+                className="font-mont bg-black text-white px-6 py-3 rounded-md mt-4"
+              >
+                Load More
+              </button>
+            </div>
+          )}
+
         </div>
       </div>
     </section>

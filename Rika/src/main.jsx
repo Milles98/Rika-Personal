@@ -20,6 +20,7 @@ import ProductDetails from "./views/ProductDetails";
 import EditProduct from "./views/EditProduct";
 import CreateProduct from "./views/CreateProduct";
 import Users from "./views/Users";
+import RedirectToPaymentForm from "./views/payment/RedirectToPaymentForm.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -37,7 +38,7 @@ createRoot(document.getElementById("root")).render(
               <Route path="/admin/edit-product/:id" element={<EditProduct />} />
               <Route path="/users" element={<Users />} />
               <Route path="/paymentform" element={<PaymentForm />} />
-              <Route path="/paymentform/:id" element={<PaymentForm />} />
+              <Route path="/paymentformtest" element={<RedirectToPaymentForm />} />
               <Route path="/return" element={<ReturnFromPayment />} />
               <Route
                 path="/customer"

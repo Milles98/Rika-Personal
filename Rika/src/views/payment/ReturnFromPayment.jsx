@@ -6,9 +6,9 @@ const ReturnFromPayment = () => {
     const hasFetched = useRef(false);
 
     useEffect(() => {
-        if (hasFetched.current) return;  // Skip if the fetch has already happened
+        if (hasFetched.current) return;
 
-        hasFetched.current = true;  // Mark that the fetch has happened
+        hasFetched.current = true;
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const sessionId = urlParams.get('session_id');

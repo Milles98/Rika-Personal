@@ -37,6 +37,7 @@ createRoot(document.getElementById("root")).render(
               <Route path="/admin/edit-product/:id" element={<EditProduct />} />
               <Route path="/users" element={<Users />} />
               <Route path="/paymentform" element={<PaymentForm />} />
+              <Route path="/paymentform/:id" element={<PaymentForm />} />
               <Route path="/return" element={<ReturnFromPayment />} />
               <Route
                 path="/customer"

@@ -10,25 +10,27 @@ const Register = () => {
     const apiUrl = 'https://rika-identity-user-f5e3fddxg4bve2eg.swedencentral-01.azurewebsites.net/Customer/Register'
 
     const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-        confirmpassword: '',
-        phoneNumber: '',
-        streetAddress: '',
-        city: '',
-        dateOfBirth: ''
+        Username: '',
+        Email: '',
+        Password: '',
+        ConfirmPassword: '',
+        PostalCode: '',
+        PhoneNumber: '',
+        StreetAddress: '',
+        City: '',
+        DateOfBirth: ''
     });
 
-    const nameMapping = {
-        username: 'Username',
-        email: 'Email',
-        password: 'Password',
-        phoneNumber: 'PhoneNumber',
-        streetAddress: 'StreetAddress',
-        city: 'City',
-        dateOfBirth: 'DateOfBirth',
-    };
+    // const nameMapping = {
+    //     username: 'Username',
+    //     email: 'Email',
+    //     password: 'Password',
+    //     phoneNumber: 'PhoneNumber',
+    //     postalcode: 'PostalCode',
+    //     streetAddress: 'StreetAddress',
+    //     city: 'City',
+    //     dateOfBirth: 'DateOfBirth',
+    // };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -42,22 +44,27 @@ const Register = () => {
 
     const validate = () => {
         const errors = {};
-        if (!formData.username) errors.username = "User Name is required.";
-        if (!formData.email) errors.email = "Email is required.";
-        else if (!validateEmail(formData.email)) {
-            errors.email = "Please enter a valid email.";
+        if (!formData.Username) errors.Username = "User Name is required.";
+        if (!formData.Email) errors.Email = "Email is required.";
+        else if (!validateEmail(formData.Email)) {
+            errors.Email = "Please enter a valid email.";
         }
-        if (!formData.password) {
-            errors.password = "Password is required.";
-        } else if (formData.password !== formData.confirmpassword) {
-            errors.password = "Passwords do not match.";
-        } else if (formData.password.length < 6) {
-            errors.password = "Password must be at least 6 characters.";
+        if (!formData.Password) {
+            errors.Password = "Password is required.";
+        } else if (formData.Password !== formData.ConfirmPassword) {
+            errors.Password = "Passwords do not match.";
+        } else if (formData.Password.length < 6) {
+            errors.Password = "Password must be at least 6 characters.";
         }
-        if (!formData.phoneNumber) errors.phoneNumber = "Phone Number is required.";
-        if (!formData.streetAddress) errors.streetAddress = "Street Address is required.";
-        if (!formData.city) errors.city = "City is required.";
-        if (!formData.dateOfBirth) errors.dateOfBirth = "Date of Birth is required.";
+        if (!formData.PostalCode){
+            errors.PostalCode = "Postal Code is required.";
+        } else if (formData.PostalCode.length < 5) {
+            errors.PostalCode = "Enter at least 5 characters.";
+        }
+        if (!formData.PhoneNumber) errors.PhoneNumber = "Phone Number is required.";
+        if (!formData.StreetAddress) errors.StreetAddress = "Street Address is required.";
+        if (!formData.City) errors.City = "City is required.";
+        if (!formData.DateOfBirth) errors.DateOfBirth = "Date of Birth is required.";
         return errors;
     };
 
@@ -76,23 +83,23 @@ const Register = () => {
                     body: JSON.stringify(formData)
                 });
                 if (response.status === 200) {
-                    console.log('Customer successfully created!');
-                    navigate('/');
+                    navigate('/customer');
                 } else if (response.status === 400) {
                     const data = await response.json();
                     const apiErrors = {};
 
+                    console.log(data.errors)
                     if (data.errors) {
                         Object.keys(data.errors).forEach((field) => {
 
-                            const formField = Object.keys(nameMapping).find((key) => nameMapping[key] === field);
+                            // const formField = Object.keys(nameMapping).find((key) => nameMapping[key] === field);
 
-                            if (formField){
-                                apiErrors[formField] = data.errors[field].join(' ');
-                            }
+                            // if (formField){
+                                apiErrors[field] = data.errors[field].join(' ');
+                            // }
                         });
                     }
-                    console.log(data.password)
+
                     if(data.password){
                         Object.keys(data.password).forEach((field) => {
                             apiErrors.password = data.password[field];
@@ -120,77 +127,89 @@ const Register = () => {
                 {/* User Name */}
                 <InputField
                     label="User Name"
-                    name="username"
-                    value={formData.username}
+                    name="Username"
+                    value={formData.Username}
                     onChange={handleChange}
-                    error={errors.username}
+                    error={errors.Username}
                 />
                 {/* Email */}
                 <InputField
                     label="Email"
-                    name="email"
-                    value={formData.email}
+                    name="Email"
+                    value={formData.Email}
                     onChange={handleChange}
-                    error={errors.email}
+                    error={errors.Email}
                 />
                 {/* Password */}
                 <div className="mb-4">
                     <label className="block text-gray-700">Password</label>
                     <InputField
-                        name="password"
-                        value={formData.password}
+                        name="Password"
+                        value={formData.Password}
                         onChange={handleChange}
                         className="mt-1 p-2 border border-gray-300 rounded w-full resize-none"
                         rows="3"
-                        error={errors.password}
+                        error={errors.Password}
                         type="password"
                     />
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700">Confirm Password</label>
                     <InputField
-                        name="confirmpassword"
-                        value={formData.confirmpassword}
+                        name="ConfirmPassword"
+                        value={formData.ConfirmPassword}
                         onChange={handleChange}
                         className="mt-1 p-2 border border-gray-300 rounded w-full resize-none"
                         rows="3"
-                        error={errors.password}
+                        error={errors.Password}
                         type="password"
                     />
                 </div>
                 {/* Phone Number */}
                 <InputField
                     label="Phone Number"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
+                    name="PhoneNumber"
+                    value={formData.PhoneNumber}
                     onChange={handleChange}
                     type="number"
-                    error={errors.phoneNumber}
+                    error={errors.PhoneNumber}
                 />
                 {/* Street Address */}
                 <InputField
                     label="Street Address"
-                    name="streetAddress"
-                    value={formData.streetAddress}
+                    name="StreetAddress"
+                    value={formData.StreetAddress}
                     onChange={handleChange}
-                    error={errors.streetAddress}
+                    error={errors.StreetAddress}
                 />
+
                 {/* City */}
-                <InputField
+                <div className="flex gap-8">
+                    <InputField
                     label="City"
-                    name="city"
-                    value={formData.city}
+                    name="City"
+                    value={formData.City}
                     onChange={handleChange}
-                    error={errors.city}
-                />
+                    error={errors.City}
+                    />
+
+                    <InputField
+                        label="Postal Code"
+                        name="PostalCode"
+                        value={formData.PostalCode}
+                        onChange={handleChange}
+                        error={errors.PostalCode}
+                    />
+                </div>
+
                 {/* Date of Birth */}
                 <InputField
                     label="Date of Birth"
-                    name="dateOfBirth"
-                    value={formData.dateOfBirth}
+                    name="DateOfBirth"
+                    value={formData.DateOfBirth}
                     onChange={handleChange}
                     type="date"
-                    error={errors.dateOfBirth}
+                    error={errors.DateOfBirth}
                 />
                 {/* Submit Button */}
                 <button

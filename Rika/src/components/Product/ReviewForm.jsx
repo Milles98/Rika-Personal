@@ -1,5 +1,3 @@
-// src/components/ReviewForm.jsx
-
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -27,9 +25,8 @@ const ReviewForm = ({ productId, isVerifiedPurchaser }) => {
     setFeedbackMessage(null);
     setErrorMessage(null);
 
-    // use real api endpoint
     try {
-      await axios.post('/api/reviews', {
+      await axios.post('https://abdinreviewproviderapi-huhph4hbbafbgraz.northeurope-01.azurewebsites.net/api/Review/approved', {
         productId,
         rating,
         comment,
@@ -40,7 +37,7 @@ const ReviewForm = ({ productId, isVerifiedPurchaser }) => {
       setComment('');
     } catch (error) {
       console.error("Review submission error:", error);
-      setErrorMessage("Failed to submit your review. Please try again.");
+      setErrorMessage(error.response?.data?.message || "Failed to submit your review. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -48,23 +45,26 @@ const ReviewForm = ({ productId, isVerifiedPurchaser }) => {
 
   return (
     <div className="review-form bg-white p-4 rounded shadow-md w-full max-w-md mx-auto">
-      <h2 className="text-lg font-semibold mb-2 text-center md:text-left">Leave a Review</h2>
+      <h2 className="text-lg font-mont font-semibold mb-2 text-center md:text-left">Leave a Review</h2>
 
-      <div className="flex justify-center md:justify-start mb-4">
+      <div className="flex justify-center md:justify-start mb-4" aria-label="Star rating">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             type="button"
             key={star}
             onClick={() => handleRatingClick(star)}
+            aria-label={`${star} star${star > 1 ? 's' : ''}`}
             className={`w-8 h-8 md:w-10 md:h-10 ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
           >
             ★
           </button>
         ))}
       </div>
+      
+      {rating > 0 && <p className="text-sm text-gray-600 text-center">Rating: {rating} star{rating > 1 ? 's' : ''}</p>}
 
       <textarea
-        className="w-full p-2 border rounded mb-4 text-sm md:text-base"
+        className="w-full p-2 border rounded font-mont mb-4 text-sm md:text-base"
         placeholder="Write your review..."
         value={comment}
         onChange={(e) => setComment(e.target.value)}
@@ -75,17 +75,18 @@ const ReviewForm = ({ productId, isVerifiedPurchaser }) => {
       <button
         type="submit"
         onClick={handleSubmit}
-        className="bg-blue-500 text-white py-2 px-4 rounded w-full md:w-auto md:px-6 md:py-3 text-sm md:text-base disabled:opacity-50"
+        className="bg-blue-500 font-mont text-white py-2 px-4 rounded w-full md:w-auto md:px-6 md:py-3 text-sm md:text-base disabled:opacity-50"
         disabled={isSubmitting || !rating || !comment || !isVerifiedPurchaser}
       >
         {isSubmitting ? 'Submitting...' : 'Submit Review'}
       </button>
 
-      {feedbackMessage && <p className="text-green-600 mt-2 text-center md:text-left">{feedbackMessage}</p>}
-      {errorMessage && <p className="text-red-600 mt-2 text-center md:text-left">{errorMessage}</p>}
+      {feedbackMessage && <p className="text-green-600 mt-2 font-mont text-center md:text-left">{feedbackMessage}</p>}
+      {errorMessage && <p className="text-red-600 mt-2 font-mont text-center md:text-left">{errorMessage}</p>}
     </div>
   );
 };
+
 
 ReviewForm.propTypes = {
   productId: PropTypes.number.isRequired,

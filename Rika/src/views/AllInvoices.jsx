@@ -8,6 +8,7 @@ const AllInvoices = () => {
     const [filteredInvoices, setFilteredInvoices] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,6 +22,8 @@ const AllInvoices = () => {
                 setFilteredInvoices(dummyInvoices.map(invoice => ({ ...invoice, total: `${invoice.total} kr` })));
             } catch (err) {
                 setError("No invoices found");
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -38,6 +41,17 @@ const AllInvoices = () => {
         );
     };
 
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="flex flex-col items-center gap-2">
+                    <div className="w-8 h-8 border-4 border-t-transparent rounded-full animate-spin"></div>
+                    <p className="font-mont text-[16px] font-semibold">Loading invoices...</p>
+                </div>
+            </div>
+        );
+    }
+    
     return (
         <div className="container mx-auto px-4 py-8">
             <ArrowBack goBackTo="/admin" className="mb-4" />
@@ -47,10 +61,10 @@ const AllInvoices = () => {
                 <div className="relative w-full max-w-md">
                     <input
                         type="text"
-                        placeholder="Search invoice..."
+                        placeholder="Search by invoiceID or Customer name..."
                         value={searchTerm}
                         onChange={handleSearch}
-                        className="px-10 py-2 border border-gray-300 rounded-full w-full focus:outline-none focus:ring-1 focus:ring-gray-300 bg-[#F3F4F5]"
+                        className="px-10 py-2 border border-none rounded-full w-full focus:outline-none focus:ring-1 focus:ring-gray-300 bg-[#F3F4F5]"
                     />
                     <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                         <SearchIcon />

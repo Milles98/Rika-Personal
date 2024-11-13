@@ -1,12 +1,12 @@
-import React, { useState, } from 'react';
+import useState from 'react';
 import SelectField from './sections/AdminCreateProduct/SelectField.jsx';
 import ArrowBack from './../common/ArrowBack.jsx';
 import InputField from './sections/AdminCreateProduct/InputField.jsx';
-import { UsePostProducts } from '../lib/postProducts.jsx';
+import { useProductContext } from '../lib/ProductProvider.jsx';
 
 const CreateProduct = () => {
   
-    const { postProductsAsync } = UsePostProducts();
+    const { postProductsAsync } = useProductContext();
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         brand: '',

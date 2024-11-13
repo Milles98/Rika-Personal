@@ -20,7 +20,6 @@ const Products = () => {
   const [sortOption, setSortOption] = useState("default");
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
   const [loadedCount, setLoadedCount] = useState(20);
-  const [totalProducts, setTotalProducts] = useState(0)
 
   const queryParams = new URLSearchParams(location.search);
   const updateSuccess = queryParams.get("update") === "success";
@@ -29,8 +28,7 @@ const Products = () => {
   const getProducts = async () => {
     const data = await getProductsData();
     setProducts(data);
-    setFilteredProducts(data.slice(0, loadedCount));
-    setTotalProducts(data.length);
+    setFilteredProducts(data);
   };
 
   useEffect(() => {
@@ -48,20 +46,20 @@ const Products = () => {
     } else if (sortOption === "nameDesc") {
       sortedProducts.sort((a, b) => b.brand.localeCompare(a.brand));
     }
-    setFilteredProducts(sortedProducts.slice(0, loadedCount));
-  }, [sortOption, products, loadedCount]);
+    setFilteredProducts(sortedProducts);
+  }, [sortOption, products]);
 
   useEffect(() => {
     const trimmedInput = searchInput.trim();
 
     if (trimmedInput === "") {
-      setFilteredProducts(products.slice(0, loadedCount));
+      setFilteredProducts(products);
       setNoResults(false);
     } else {
       const results = products.filter(product =>
         product.brand?.toLowerCase().includes(trimmedInput.toLowerCase())
       );
-      setFilteredProducts(results.slice(0, loadedCount));
+      setFilteredProducts(results);
 
       if (results.length === 0) {
         setNoResults(true);
@@ -69,7 +67,7 @@ const Products = () => {
         setNoResults(false);
       }
     }
-  }, [searchInput, products, loadedCount]);
+  }, [searchInput, products]);
 
   const handleSortChange = (option) => {
     setSortOption(option);
@@ -77,7 +75,7 @@ const Products = () => {
   };
 
   const handleLoadMore = () => {
-    setLoadedCount(prevCount => prevCount + 20);
+    setLoadedCount((prevCount) => prevCount + 10);
   }
 
   const handleSearchKeyDown = (e) => {
@@ -212,13 +210,13 @@ const Products = () => {
             </div>
           ) : (
             <div className="flex justify-center gap-[15px] flex-wrap mb-[9px]">
-              {filteredProducts.map((product) => (
+              {filteredProducts.slice(0, loadedCount).map((product) => (
                 <ProductCard key={product.id} data={product} />
               ))}
             </div>
           )}
 
-          {filteredProducts.length < totalProducts && (
+          {loadedCount < filteredProducts.length && (
             <div className="flex justify-center">
               <button
                 onClick={handleLoadMore}

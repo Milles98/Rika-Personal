@@ -12,6 +12,10 @@ const AdminLandingPage = () => {
       navigate('/productscreate');
     };
 
+    const toAllInvoices = () => {
+        navigate("/all-invoices");
+    };
+
     useEffect(() => {
         const authorizeUser = async () => {
             await checkAuth();
@@ -38,6 +42,14 @@ const AdminLandingPage = () => {
                     className="w-[130px] bg-green-500 text-white p-2 rounded hover:bg-green-800 mt-4">
                     Create Product
                 </button>
+                <button
+                onClick={toAllInvoices}
+                id="invoicesButton"
+                type="button"
+                className="w-[130px] bg-blue-500 text-white p-2 rounded hover:bg-blue-800 mt-4"
+            >
+                All Invoices
+            </button>
         </div>
     );
 };

@@ -11,7 +11,7 @@ const SuccessAlert = ({ message }) => {
 
     return (
         <div
-            className="fixed top-1 left-1/2 transform -translate-x-1/2 z-50 w-2/3 sm:max-w-md mx-auto p-4"
+            className="fixed top-[40px] left-1/2 transform -translate-x-1/2 z-50 w-2/3 sm:max-w-md mx-auto p-4"
             role="alert"
         >
             <div className="flex items-center p-4 text-green-800 rounded-lg bg-green-50 dark:bg-black dark:text-green-400">

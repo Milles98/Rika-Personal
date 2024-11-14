@@ -1,10 +1,7 @@
 import React from 'react'
+import RedirectToPaymentButton from './RedirectToPaymentButton';
 const RedirectToPaymentForm = () => {
-
-    const getStripe = () => {
-        return window.Stripe('pk_test_51QJtOIKTnkBH3a68Mw5LucP5WEubaAfvjGdySsq0rjdisrYHxwDmbrPEzmnrSA7JjaziZdIS5ed8GP0yJ3HCu50s00sCkbfLVt');
-    };
-    const orderDetails = {
+    const testOrderDetails = {
         orderId: 10,
         emailAddress: 'test@mail.se',
         address: 'street 2',
@@ -14,33 +11,8 @@ const RedirectToPaymentForm = () => {
         ],
         totalAmount: 4000
     };
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`https://localhost:7127/create-checkout-session`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(orderDetails),
-            });
-            const data = await response.json();
-            console.log(data);
-
-            if (response.ok) {
-                const stripe = await getStripe();
-                stripe.redirectToCheckout({ sessionId: data.sessionId });
-            } else {
-                console.log(data.error);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
     return (
-        <form onSubmit={handleSubmit}>
-            <button type="submit">Payyyyyyyyyyyy</button>
-        </form>
+        <RedirectToPaymentButton orderDetails={testOrderDetails} />
     )
 }
 

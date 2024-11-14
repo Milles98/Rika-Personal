@@ -11,7 +11,6 @@ import "./assets/css/main.css";
 
 import Header from "./views/sections/header/Header";
 import Home from "./views/Home";
-import PaymentForm from "./views/payment/PaymentForm";
 import ReturnFromPayment from "./views/payment/ReturnFromPayment";
 import Login from "./views/Login.jsx";
 import CustomerLandingPage from "./views/customerpages/CustomerLandingPage.jsx";
@@ -44,7 +43,6 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/admin/edit-product/:id" element={<EditProduct />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/paymentform" element={<PaymentForm />} />
                 <Route path="/paymentformtest" element={<RedirectToPaymentForm />} />
                 <Route path="/shipping" element={<ShippingOptions />} />
                 <Route path="/return" element={<ReturnFromPayment />} />
@@ -64,14 +62,14 @@ createRoot(document.getElementById("root")).render(
                     </ProtectedRoute>
                   }
                 />
-                      <Route
-                path="/all-invoices"
-                element={
-                  <ProtectedRoute requiredRole="admin">
-                    <AllInvoices />
-                  </ProtectedRoute>
-                }
-              />
+                <Route
+                  path="/all-invoices"
+                  element={
+                    <ProtectedRoute requiredRole="admin">
+                      <AllInvoices />
+                    </ProtectedRoute>
+                  }
+                />
               </Routes>
             </div>
           </ShippingProvider>

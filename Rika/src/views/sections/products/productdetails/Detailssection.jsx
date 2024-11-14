@@ -64,7 +64,16 @@ const Detailssection = () => {
 
     const existingCart = JSON.parse(localStorage.getItem("cartItems")) || [];
 
-    existingCart.push(cartItem);
+    const existingItemIndex = existingCart.findIndex(
+      (item) => item.id === cartItem.id && item.size === cartItem.size
+    );
+
+    if (existingItemIndex !== -1) {
+      existingCart[existingItemIndex].quantity += cartItem.quantity;
+    } else {
+      existingCart.push(cartItem);
+    }
+
     localStorage.setItem("cartItems", JSON.stringify(existingCart));
     window.dispatchEvent(new Event("cartUpdated"));
   };

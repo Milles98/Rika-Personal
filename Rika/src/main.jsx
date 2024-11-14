@@ -47,6 +47,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/paymentform" element={<PaymentForm />} />
                 <Route path="/paymentformtest" element={<RedirectToPaymentForm />} />
                 <Route path="/shipping" element={<ShippingOptions />} />
+                <Route path="/return" element={<ReturnFromPayment />} />
                 <Route
                   path="/customer"
                   element={

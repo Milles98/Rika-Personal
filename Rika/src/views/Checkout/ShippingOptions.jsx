@@ -76,7 +76,6 @@ const ShippingOptions = () => {
       );
       console.log("Transit time data:", transitData);
       setTransitTime(transitData || []);
-      // setSelectedDeliveryOption(transitData || []); Ska vi ha detta?
     } catch (error) {
       console.error("Error fetching transit times:", error);
       setTransitTime([]);
@@ -103,7 +102,7 @@ const ShippingOptions = () => {
 
   //Implement real navigation here
   const navigateToPayment = () => {
-    navigate("/Home");
+    navigate("/paymentform");
   };
 
   return (
@@ -296,34 +295,57 @@ const ShippingOptions = () => {
                   {transitTime
                     .filter((_, index) => {
                       if (filterIndex === "PostNord") {
+                        // Use explicit indices for PostNord
                         return [3, 5, 9].includes(index);
                       } else if (filterIndex === "DHL") {
+                        // DHL allows only index 8
                         return index === 8;
                       } else if (filterIndex === "Instabox") {
+                        // Instabox allows only index 8
                         return index === 8;
                       }
                       return false;
                     })
-                    .map((time, index) => (
-                      <li
-                        key={index}
-                        onClick={() => handleDeliveryOption(time)}
-                        className={`p-2 border rounded cursor-pointer shadow hover:bg-green-200 ${
-                          selectedDeliveryOption === time
-                            ? "bg-green-200 border-green-500"
-                            : "bg-gray-100"
-                        }`}
-                      >
-                        <p>
-                          <strong>Type:</strong>{" "}
-                          {time.serviceInformation?.name || "N/A"}
-                        </p>
-                        <p>
-                          <strong>Arrival:</strong>{" "}
-                          {new Date(time.timeOfArrival).toLocaleDateString()}
-                        </p>
-                      </li>
-                    ))}
+                    .map((time, index) => {
+                      // Explicitly assign fake prices based on the index
+                      const prices = {
+                        0: 349,
+                        1: 249,
+                        2: 169,
+                        3: 119,
+                      };
+
+                      const price = prices[index] || 0; // Default to 0 kr if index not found
+
+                      return (
+                        <li
+                          key={index}
+                          onClick={() =>
+                            handleDeliveryOption({
+                              ...time,
+                              price, // Include price in the selected delivery option
+                            })
+                          }
+                          className={`p-2 border rounded cursor-pointer shadow hover:bg-green-200 ${
+                            selectedDeliveryOption === time
+                              ? "bg-green-200 border-green-500"
+                              : "bg-gray-100"
+                          }`}
+                        >
+                          <p>
+                            <strong>Type:</strong>{" "}
+                            {time.serviceInformation?.name || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Arrival:</strong>{" "}
+                            {new Date(time.timeOfArrival).toLocaleDateString()}
+                          </p>
+                          <p>
+                            <strong>Price:</strong> {price} kr
+                          </p>
+                        </li>
+                      );
+                    })}
                 </ul>
               </div>
             ) : (

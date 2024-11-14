@@ -41,12 +41,10 @@ const ReturnFromPayment = () => {
     }, []);
 
     if (status === 'open') {
-        return (
-            <Navigate to="/checkout" />
-        )
+        navigate('/checkout');
     }
 
-    if(loading){
+    if (loading) {
         return (
             <div className="flex min-h-screen justify-center items-center">
                 <div className="inline-block w-8 h-8 border-4 border-black border-t-transparent rounded-full animate-spin" role="status"></div>

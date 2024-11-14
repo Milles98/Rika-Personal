@@ -26,8 +26,8 @@ const ShoppingCart = () => {
     <>
       <div className="relative flex items-center w-[100%] h-[100%]">
         {addedItems > 0 ? (
-          <div className="absolute right-0 top-0 w-[13px] h-[13px] rounded-full bg-black">
-            <span className="absolute left-[5px] font-mont text-white font-medium text-[7px] leading-[14.56px] z-10">
+          <div className="absolute flex items-center justify-center right-0 top-0 w-[13px] h-[13px] rounded-full bg-black">
+            <span className="font-mont text-white font-medium text-[7px] leading-[14.56px] z-10">
               {addedItems}
             </span>
           </div>

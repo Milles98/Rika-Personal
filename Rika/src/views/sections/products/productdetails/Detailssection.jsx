@@ -6,6 +6,8 @@ import { useProductContext } from "../../../../lib/ProductProvider";
 import HeartIcon from "../../../../assets/icons/HeartIcon";
 import BagWhite from "../../../../assets/icons/BagWhite";
 
+import SuccessAlert from "../../../../common/SuccessAlert";
+
 const Detailssection = () => {
   const { id } = useParams();
   const { getProductData } = useProductContext();
@@ -21,6 +23,7 @@ const Detailssection = () => {
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
   const [sizeError, setSizeError] = useState("");
+  const [showAlert, setShowAlert] = useState(false)
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -96,10 +99,16 @@ const Detailssection = () => {
 
     localStorage.setItem("cartItems", JSON.stringify(existingCart));
     window.dispatchEvent(new Event("cartUpdated"));
+
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 2500);
   };
 
   return (
     <section>
+      {showAlert && <SuccessAlert message="Item added to cart!" />}
       <div className="flex gap-4 px-4 py-8">
         <div className="flex-none">
           <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">

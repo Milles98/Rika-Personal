@@ -5,11 +5,12 @@ const RedirectToPaymentForm = () => {
         return window.Stripe('pk_test_51QJtOIKTnkBH3a68Mw5LucP5WEubaAfvjGdySsq0rjdisrYHxwDmbrPEzmnrSA7JjaziZdIS5ed8GP0yJ3HCu50s00sCkbfLVt');
     };
     const orderDetails = {
-        emailAddress: 'asd@asd.com',
-        address: 'ligmagatan 2',
+        orderId: 10,
+        emailAddress: 'test@mail.se',
+        address: 'street 2',
         products: [
-            { id: 1, model: 'Product1', quantity: 1, price: 1000 },
-            { id: 2, model: 'Product2', quantity: 2, price: 2000 }
+            { id: 1, model: 'T-Shirt', quantity: 1, price: 1000 },
+            { id: 2, model: 'Boots', quantity: 2, price: 2000 }
         ],
         totalAmount: 4000
     };

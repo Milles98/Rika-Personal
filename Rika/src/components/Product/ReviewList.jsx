@@ -12,6 +12,9 @@ const ReviewList = ({ productId }) => {
       setLoading(true);
       setError(null);
 
+
+
+
       try {
         const response = await axios.get(
           "https://abdinreviewproviderapi-huhph4hbbafbgraz.northeurope-01.azurewebsites.net/api/Review/allreviews"
@@ -20,11 +23,11 @@ const ReviewList = ({ productId }) => {
         const productReviews = response.data
           .filter((review) => review.productID === productId && review.status === "Approved")
           .map((review) => ({
-            id: review.reviewId,
+            reviewID: review.reviewID,
             rating: review.rating,
             comment: review.reviewDescription,
-            author: review.user?.name || `User ${review.userID}`, 
-            date: new Date(review.dateReviewed).toLocaleDateString(),
+            author: `User ${review.userID}`,
+            date: new Date().toLocaleDateString(),
           }));
 
         setReviews(productReviews);
@@ -40,29 +43,26 @@ const ReviewList = ({ productId }) => {
   }, [productId]);
 
   if (loading) return <p>Loading reviews...</p>;
-  if (error) return <p className="font-mont text-red-500">{error}</p>;
-  if (!reviews.length) return <p className="font-mont">Be the first one to leave a review for this product!</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!reviews.length) return <p>Be the first one to leave a review for this product!</p>;
 
   return (
     <div className="review-list space-y-4">
-      <h2 className="text-xl font-mont font-semibold mb-4">Customer Reviews</h2>
+      <h2 className="text-xl font-semibold mb-4">Customer Reviews</h2>
       {reviews.map((review) => (
-        <div key={review.id} className="review-card p-4 border rounded-md shadow-sm">
+        <div key={review.reviewID} className="p-4 border rounded-md shadow-sm">
           <div className="flex items-center mb-2">
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <span
-                  key={i}
-                  className={i < review.rating ? "text-yellow-400" : "text-gray-300"}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
-            <span className="ml-2 font-mont text-gray-600">by {review.author}</span>
-            <span className="ml-4 font-mont text-gray-400 text-sm">{review.date}</span>
+            {[...Array(5)].map((_, i) => (
+              <span
+                key={i}
+                className={i < review.rating ? "text-yellow-400" : "text-gray-300"}
+              >
+                ★
+              </span>
+            ))}
+            <span className="ml-2 text-gray-600">by {review.author}</span>
           </div>
-          <p className="font-mont text-gray-700">{review.comment}</p>
+          <p className="text-gray-700">{review.comment}</p>
         </div>
       ))}
     </div>

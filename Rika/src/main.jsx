@@ -25,6 +25,8 @@ import AllInvoices from "./views/AllInvoices";
 
 import ShippingOptions from "./views/Checkout/ShippingOptions.jsx";
 
+import AdminReviewPanel from "./components/Admin/AdminReviewPanel.jsx";
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
@@ -44,6 +46,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/register" element={<Register />} />
                 <Route path="/paymentform" element={<PaymentForm />} />
                 <Route path="/shipping" element={<ShippingOptions />} />
+                <Route path="/admin/reviews" element={<AdminReviewPanel />} />
                 <Route
                   path="/customer"
                   element={

@@ -14,9 +14,12 @@ const Detailssection = () => {
     model: "",
     description: "",
     price: 0,
+    size: []
   });
+
   const [amount, setAmount] = useState(1);
   const [size, setSize] = useState("");
+  const [sizeError, setSizeError] = useState("");
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -36,8 +39,18 @@ const Detailssection = () => {
     setAmount(amount + 1);
   };
 
-  const handleSizeClick = (selectedSize) => {
-    setSize(selectedSize);
+  const handleSizeClick = (sizeOption) => {
+    if(size === sizeOption){
+      setSize("");
+    }
+    else if (productDetails.size.includes(sizeOption)) {
+      setSize(sizeOption);
+      setSizeError("");
+    }
+    else {
+      setSizeError("This size is not available right now");
+    }
+
   };
 
   return (
@@ -70,46 +83,19 @@ const Detailssection = () => {
       </div>
 
       <div className="flex-col gap-4 px-4 py-6">
-        <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">
-          Size
-        </h1>
-        <div className="flex justify-center">
-          <div className="flex gap-4 py-4">
-            <button
-              onClick={() => handleSizeClick("S")}
-              className={`${
-                size === "S" ? "bg-black text-white" : "bg-white text-black"
+        {["S", "M", "L", "XL", "XXL"].map((sizeOption) => (
+          <button
+            key={sizeOption}
+            onClick={() => handleSizeClick(sizeOption)}
+            className={`${size === sizeOption ? "bg-black text-white" : "bg-white text-black"
               } border-2 hover:bg-black hover:text-white font-bold py-2 px-4 rounded-full`}
-            >
-              S
-            </button>
-            <button
-              onClick={() => handleSizeClick("M")}
-              className={`${
-                size === "M" ? "bg-black text-white" : "bg-white text-black"
-              } border-2 hover:bg-black hover:text-white font-bold py-2 px-3 rounded-full`}
-            >
-              M
-            </button>
-            <button
-              onClick={() => handleSizeClick("L")}
-              className={`${
-                size === "L" ? "bg-black text-white" : "bg-white text-black"
-              } border-2 hover:bg-black hover:text-white font-bold py-2 px-4 rounded-full`}
-            >
-              L
-            </button>
-          </div>
-
-          <div className="grow"></div>
-
-          <div className="flex gap-3 py-6 px-3 border rounded-full">
-            <button className="bg-[#d9ccce] border-2 hover:bg-[#d9ccce]/[.5] hover:text-white text-black font-bold px-3 rounded-full"></button>
-            <button className="bg-[#4d4a5d] border-2 hover:bg-[#4d4a5d]/[.5] hover:text-white text-black font-bold px-3 rounded-full"></button>
-            <button className="bg-[#222222] border-2 hover:bg-[#222222]/[.5] hover:text-white text-black font-bold px-3 rounded-full"></button>
-            <button className="bg-[#ffffff] border-2 hover:bg-[#808080]/[.1] hover:text-white text-black font-bold px-3 rounded-full"></button>
-          </div>
-        </div>
+          >
+            {sizeOption}
+          </button>
+        ))}
+      </div>
+      <div>
+        {sizeError && <p className="text-red-500">{sizeError}</p>}
       </div>
 
       <div className="flex gap-4 px-4 py-6">

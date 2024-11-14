@@ -1,10 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import InputField from "../sections/fields/InputField"
 import ArrowBack from "../../common/ArrowBack"
 import { useState, } from 'react';
 import { useShippingContext } from "../../lib/ShippingOptionsProvider";
 
 const ShippingOptions = () => {
-    const { getServicePoints, getTransitTimes } = useShippingContext();
+    const navigate = useNavigate();
+    const { getServicePoints, getTransitTimes, setSelectedShippingDetails } = useShippingContext();
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         postalCode: '',
@@ -69,6 +71,7 @@ const ShippingOptions = () => {
             const transitData = await getTransitTimes(servicePoint.visitingAddress.postalCode);
             console.log("Transit time data:", transitData);
             setTransitTime(transitData || []);
+            // setSelectedDeliveryOption(transitData || []); Ska vi ha detta? 
         } catch (error) {
             console.error("Error fetching transit times:", error);
             setTransitTime([]);
@@ -81,16 +84,22 @@ const ShippingOptions = () => {
 
 
     const handleConfirm = () => {
-        if (selectedDeliveryOption) {
-            setIsConfirmed(true);
-            console.log("Delivery confirmed:", selectedLocation, selectedDeliveryOption);
+        if (selectedDeliveryOption && selectedLocation) {
+            const shippingDetails = {
+                servicePoint: selectedLocation,
+                deliveryOption: selectedDeliveryOption
+            };
+            setSelectedShippingDetails(shippingDetails)
+            console.log("saved shipping details to context", shippingDetails);
             setSelectedLocation(null);
+            setSelectedDeliveryOption(null);
+            setIsConfirmed(true);
         }
     };
 
     //Implement real navigation here
     const navigateToPayment = () => {
-        window.location.href = "/products";
+       navigate("/Home");
     };
 
 
@@ -187,7 +196,8 @@ const ShippingOptions = () => {
 
                         <button
                             onClick={handleConfirm}
-                            className={`mt-4 w-full bg-green-800 text-white p-2 rounded hover:bg-gray-800`}>
+                            className={`mt-4 w-full bg-green-800 text-white p-2 rounded hover:bg-gray-800`}
+                            hidden={!selectedLocation || !selectedDeliveryOption}>
                             Confirm Delivery
                         </button>
                     </div>

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useState, useEffect } from 'react';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const ReturnFromPayment = () => {
     const [status, setStatus] = useState(null);
     const [customerEmail, setCustomerEmail] = useState('');
@@ -49,13 +49,17 @@ const ReturnFromPayment = () => {
 
     if (status === 'complete') {
         return (
-            <section id="success">
+            <section id="success" className="flex min-h-screen justify-center items-center" >
                 <p>
                     We appreciate your business! A confirmation email will be sent to {customerEmail}.
 
-                    If you have any questions, please email <a href="mailto:orders@example.com">orders@example.com</a>.
+                    If you have any questions, please email <a href="mailto:orders@rika.com">orders@rika.com</a>.
                 </p>
-                <button onClick={redirectToHome}>Go to Home</button>
+                <button
+                    className="bg-black text-white font-bold px-3 py-1 lg:py-2 lg:px-4 rounded-full border border-black hover:bg-white hover:text-black transition-colors duration-300"
+                    onClick={redirectToHome}>
+                    Go to Home
+                </button>
             </section>
         )
     }

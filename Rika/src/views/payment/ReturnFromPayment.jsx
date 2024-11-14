@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const ReturnFromPayment = () => {
     const [status, setStatus] = useState(null);
     const [customerEmail, setCustomerEmail] = useState('');
+    const [loading, setLoading] = useState(true);
     const hasFetched = useRef(false);
     const navigate = useNavigate();
 
@@ -17,6 +18,7 @@ const ReturnFromPayment = () => {
 
         if (sessionStorage.getItem(`emailSent-${sessionId}`)) {
             console.log("email already sent")
+            setLoading(false);
             redirectToHome();
             return;
         }
@@ -35,6 +37,7 @@ const ReturnFromPayment = () => {
                 console.error("Error sending email:", error);
                 redirectToHome();
             })
+            .finally(() => setLoading(false));
     }, []);
 
     if (status === 'open') {
@@ -43,16 +46,24 @@ const ReturnFromPayment = () => {
         )
     }
 
+    if(loading){
+        return (
+            <div className="flex min-h-screen justify-center items-center">
+                <div className="inline-block w-8 h-8 border-4 border-black border-t-transparent rounded-full animate-spin" role="status"></div>
+                <span className="ml-3 text-black">Preparing your email...</span>
+            </div>
+        );
+    }
+
     const redirectToHome = () => {
         navigate('/');
     }
 
     if (status === 'complete') {
         return (
-            <section id="success" className="flex min-h-screen justify-center items-center" >
+            <section id="success" className="flex flex-col min-h-screen justify-center items-center space-y-4" >
                 <p>
-                    We appreciate your business! A confirmation email will be sent to {customerEmail}.
-
+                    We appreciate your business! A confirmation email has been sent to {customerEmail}.
                     If you have any questions, please email <a href="mailto:orders@rika.com">orders@rika.com</a>.
                 </p>
                 <button

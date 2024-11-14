@@ -6,7 +6,7 @@ const stripePromise = loadStripe('pk_test_51QJtOIKTnkBH3a68Mw5LucP5WEubaAfvjGdyS
 const RedirectToPaymentButton = ({ orderDetails }) => {
     const handleClick = async () => {
         try {
-            const response = await fetch(`https://localhost:7127/create-checkout-session`, {
+            const response = await fetch(`https://rika-payment.azurewebsites.net/create-checkout-session`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

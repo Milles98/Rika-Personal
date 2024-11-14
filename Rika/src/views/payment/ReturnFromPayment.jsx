@@ -20,7 +20,7 @@ const ReturnFromPayment = () => {
             redirectToHome();
             return;
         }
-        fetch(`https://localhost:7127/session-status?session_id=${sessionId}`)
+        fetch(`https://rika-payment.azurewebsites.net/session-status?session_id=${sessionId}`)
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);

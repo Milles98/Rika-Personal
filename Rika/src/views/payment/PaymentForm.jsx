@@ -1,13 +1,15 @@
 import React, { useCallback, useState } from 'react';
-import { Elements, CardElement, useStripe, useElements, EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
+import { Elements, EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { useParams } from 'react-router-dom';
 
 const stripePromise = loadStripe('pk_test_51QJtOIKTnkBH3a68Mw5LucP5WEubaAfvjGdySsq0rjdisrYHxwDmbrPEzmnrSA7JjaziZdIS5ed8GP0yJ3HCu50s00sCkbfLVt');
 
 function PaymentForm() {
     // Create a Checkout Session
+    const { id } = useParams();
     const fetchClientSecret = useCallback(() => {
-        return fetch("https://localhost:7127/create-checkout-session", {
+        return fetch(`https://localhost:7127/create-checkout-session/${id}`, {
             method: "POST",
         })
             .then((res) => res.json())

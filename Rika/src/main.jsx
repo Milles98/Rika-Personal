@@ -12,6 +12,7 @@ import "./assets/css/main.css";
 import Header from "./views/sections/header/Header";
 import Home from "./views/Home";
 import PaymentForm from "./views/payment/PaymentForm";
+import ReturnFromPayment from "./views/payment/ReturnFromPayment";
 import Login from "./views/Login.jsx";
 import CustomerLandingPage from "./views/customerpages/CustomerLandingPage.jsx";
 import AdminLandingPage from "./views/adminpages/AdminLandingPage.jsx";
@@ -20,6 +21,7 @@ import ProductDetails from "./views/ProductDetails";
 import EditProduct from "./views/EditProduct";
 import CreateProduct from "./views/CreateProduct";
 import Users from "./views/Users";
+import RedirectToPaymentForm from "./views/payment/RedirectToPaymentForm.jsx";
 import Register from "./views/Register.jsx";
 import AllInvoices from "./views/AllInvoices";
 
@@ -43,6 +45,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/users" element={<Users />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/paymentform" element={<PaymentForm />} />
+                <Route path="/paymentformtest" element={<RedirectToPaymentForm />} />
                 <Route path="/shipping" element={<ShippingOptions />} />
                 <Route
                   path="/customer"

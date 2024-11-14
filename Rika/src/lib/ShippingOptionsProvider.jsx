@@ -6,8 +6,8 @@ const ShippingContext = createContext();
 export const useShippingContext = () => useContext(ShippingContext);
 
 export const ShippingProvider = ({ children }) => {
-
     const [notFound, setNotFound] = useState(false);
+    const [selectedShippingDetails, setSelectedShippingDetails] = useState(null)
 
     // Fetch ServicePoints from API
     const getServicePoints = async (formData) => {
@@ -40,7 +40,13 @@ export const ShippingProvider = ({ children }) => {
     };
 
     return (
-        <ShippingContext.Provider value={{ getServicePoints, getTransitTimes, notFound }}>
+        <ShippingContext.Provider value={{ 
+            getServicePoints, 
+            getTransitTimes, 
+            notFound,
+            selectedShippingDetails,
+            setSelectedShippingDetails 
+            }}>
             {children}
         </ShippingContext.Provider>
     );

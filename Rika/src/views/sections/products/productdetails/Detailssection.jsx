@@ -24,9 +24,29 @@ const Detailssection = () => {
 
   useEffect(() => {
     const fetchProductDetails = async () => {
-      const data = await getProductData(id);
-      setProductDetails(data);
+      try {
+        const data = await getProductData(id);
+        const checkImageUrl = async (url) => {
+          try {
+            const response = await fetch(url);
+            const contentType = response.headers.get("content-type");
+            if (!response.ok || !contentType.includes("image")) {
+              return "/No_Product_Image_Available.png";
+            }
+            return url;
+          } catch {
+            return "/No_Product_Image_Available.png";
+          }
+        };
+
+        const validatedImageUrl = await checkImageUrl(data.image);
+        setProductDetails({ ...data, image: validatedImageUrl });
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+        // Redirect till en product not fund page kanske? 
+      }
     };
+
     fetchProductDetails();
   }, [id]);
 

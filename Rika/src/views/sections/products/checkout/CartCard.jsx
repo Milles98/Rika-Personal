@@ -1,7 +1,35 @@
-import React from "react";
+import { useState } from "react";
 
 const CartCard = ({ data }) => {
-  const { brand, model, price, size, image, quantity } = data;
+  const { id, brand, model, price, size, image, quantity } = data;
+  const [amount, setAmount] = useState(quantity);
+
+  const updateLocalStorage = (newQuantity) => {
+    const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const updatedCart = cartItems.map((item) => {
+      if (item.id === id && item.size === size) {
+        return { ...item, quantity: newQuantity };
+      }
+      return item;
+    });
+
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
+
+  const handleSub = () => {
+    if (amount > 1) {
+      const newAmount = amount - 1;
+      setAmount(newAmount);
+      updateLocalStorage(newAmount);
+    }
+  };
+
+  const handleAdd = () => {
+    const newAmount = amount + 1;
+    setAmount(newAmount);
+    updateLocalStorage(newAmount);
+  };
 
   return (
     <div className="flex gap-5 justify-between px-3.5 py-2.5 bg-white rounded-xl shadow-[0px_11px_24px_rgba(0,0,0,0.1)]">
@@ -28,7 +56,7 @@ const CartCard = ({ data }) => {
       <div className="self-end flex items-center justify-evenly w-[70px] h-[30px] rounded-[30px] px-1 bg-[#EEEEEE]">
         <button onClick={() => handleSub()}>-</button>
         <span className="font-mont font-medium min-w-5 text-center">
-          {quantity}
+          {amount}
         </span>
         <button onClick={() => handleAdd()}>+</button>
       </div>

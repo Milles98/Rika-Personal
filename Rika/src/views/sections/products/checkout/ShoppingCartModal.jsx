@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const ShoppingCartModal = ({ isOpen, onClose, cartData }) => {
   const [totalItems, setTotalItems] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(500);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [unavailable, setUnavailable] = useState(false);
   const navigate = useNavigate();
 
@@ -15,21 +15,31 @@ const ShoppingCartModal = ({ isOpen, onClose, cartData }) => {
     }
   };
 
-  useEffect(() => {
-    if (cartData && cartData.length > 0) {
-      const total = cartData.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0
-      );
+  const calculateTotals = () => {
+    const updatedCartData = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const totalPrice = updatedCartData.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
 
-      setTotalItems(cartData.length);
-      setTotalPrice(total);
-      setUnavailable(true);
-    } else {
-      setTotalItems(0);
-      setTotalPrice(0);
-      setUnavailable(false);
-    }
+    const totalItems = updatedCartData.reduce(
+      (acc, item) => acc + item.quantity,
+      0
+    );
+
+    setTotalItems(totalItems);
+    setTotalPrice(totalPrice);
+    setUnavailable(updatedCartData.length > 0);
+  };
+
+  useEffect(() => {
+    calculateTotals();
+
+    window.addEventListener("cartUpdated", calculateTotals);
+
+    return () => {
+      window.removeEventListener("cartUpdated", calculateTotals);
+    };
   }, [cartData]);
 
   if (!isOpen) return null;

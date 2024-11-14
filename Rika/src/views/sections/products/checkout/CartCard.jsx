@@ -20,7 +20,9 @@ const CartCard = ({ data }) => {
             Size: {size}
           </span>
           <br />
-          <span className="text-sm font-extrabold font-mont">${price}</span>
+          <span className="text-sm font-bold font-mont">
+            ${price.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+          </span>
         </div>
       </div>
       <div className="self-end flex items-center justify-evenly w-[70px] h-[30px] rounded-[30px] px-1 bg-[#EEEEEE]">

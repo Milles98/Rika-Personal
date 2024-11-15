@@ -35,8 +35,6 @@ const ShippingOptions = () => {
     }
   };
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
@@ -97,23 +95,23 @@ const ShippingOptions = () => {
       setSelectedShippingDetails(shippingDetails);
       console.log("saved shipping details to context", shippingDetails);
       const dropdownIds = ["postnord-select", "dhl-select", "instabox-select"];
-    dropdownIds.forEach((id) => {
-      if (id !== `${filterIndex.toLowerCase()}-select`) {
-        const dropdown = document.getElementById(id);
-        if (dropdown) {
-          dropdown.selectedIndex = 0; // Reset to default option
-          dropdown.options[0].text="-- Select a service point --";
+      dropdownIds.forEach((id) => {
+        if (id !== `${filterIndex.toLowerCase()}-select`) {
+          const dropdown = document.getElementById(id);
+          if (dropdown) {
+            dropdown.selectedIndex = 0; // Reset to default option
+            dropdown.options[0].text = "-- Select a service point --";
+          }
         }
-      }
-    });
+      });
       setSelectedLocation(null);
       setSelectedDeliveryOption(null);
       setIsConfirmed(true);
       const servicePointSelected = document.getElementById(
         `${filterIndex.toLowerCase()}-select`
       );
-      if(servicePointSelected){
-        servicePointSelected.options[0].text=`${selectedLocation.name}, ${selectedDeliveryOption.serviceInformation.name}`;
+      if (servicePointSelected) {
+        servicePointSelected.options[0].text = `${selectedLocation.name}, ${selectedDeliveryOption.serviceInformation.name}`;
       }
     }
   };
@@ -125,35 +123,42 @@ const ShippingOptions = () => {
 
   return (
     <div className="min-h-screen bg-gray-300 p-4 flex flex-col items-center">
-      {/* Form Section */}
-      <form onSubmit={handleSubmit} className="w-full max-w-md mb-6">
-        <div className="flex items-center justify-between mb-6">
-          <ArrowBack goBackTo="/admin" />
-          <h2 className="text-xl sm:text-2xl text-center flex-grow text-gray-800">
-            Shipping Options
-          </h2>
-          <div className="sm:w-6"></div>
+      {/* Title Section with Back Arrow */}
+      <div className="w-full max-w-md flex items-center mb-6">
+        {/* Back Arrow */}
+        <div className="mr-4">
+          <ArrowBack goBackTo="/products" />
         </div>
-        {/* Postal Code Input */}
-        <InputField
-          label="Postal Code"
-          name="postalCode"
-          value={formData.postalCode}
-          onChange={handleChange}
-          type="text"
-          error={errors.postalCode}
-        />
+        {/* Title */}
+        <h2 className="text-xl sm:text-2xl text-gray-800 flex-grow text-center mr-14 mb-2">
+          Shipping Options
+        </h2>
+      </div>
 
-        {/* Submit Button */}
-        <button
-          id="showServicePoints"
-          type="submit"
-          className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
-          disabled={loading}
-        >
-          {loading ? "Loading..." : "Show Service Points"}
-        </button>
-      </form>
+      {/* Form Section */}
+      <div className="w-full max-w-md">
+        <form onSubmit={handleSubmit} className="w-full">
+          {/* Postal Code Input */}
+          <InputField
+            label="Postal Code"
+            name="postalCode"
+            value={formData.postalCode}
+            onChange={handleChange}
+            type="text"
+            error={errors.postalCode}
+          />
+
+          {/* Submit Button */}
+          <button
+            id="showServicePoints"
+            type="submit"
+            className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Show Service Points"}
+          </button>
+        </form>
+      </div>
 
       {/* Service Points PostNord Section */}
       {servicePoints.length > 0 && (

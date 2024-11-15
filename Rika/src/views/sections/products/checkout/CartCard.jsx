@@ -1,4 +1,5 @@
 import { useState } from "react";
+import TrashBinIcon from "../../../../assets/icons/TrashBinIcon";
 
 const CartCard = ({ data }) => {
   const { id, brand, model, price, size, image, quantity } = data;
@@ -17,11 +18,24 @@ const CartCard = ({ data }) => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
+  const removeFromLocalStorage = () => {
+    const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const updatedCart = cartItems.filter(
+      (item) => !(item.id === id && item.size === size)
+    );
+
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
+
   const handleSub = () => {
+    const newAmount = amount - 1;
+    setAmount(newAmount);
+
     if (amount > 1) {
-      const newAmount = amount - 1;
-      setAmount(newAmount);
       updateLocalStorage(newAmount);
+    } else {
+      removeFromLocalStorage();
     }
   };
 
@@ -53,12 +67,19 @@ const CartCard = ({ data }) => {
           </span>
         </div>
       </div>
-      <div className="self-end flex items-center justify-evenly w-[70px] h-[30px] rounded-[30px] px-1 bg-[#EEEEEE]">
-        <button onClick={() => handleSub()}>-</button>
-        <span className="font-mont font-medium min-w-5 text-center">
-          {amount}
-        </span>
-        <button onClick={() => handleAdd()}>+</button>
+      <div className="flex flex-col justify-between">
+        <div className="flex self-end">
+          <button onClick={removeFromLocalStorage}>
+            <TrashBinIcon />
+          </button>
+        </div>
+        <div className="flex items-center justify-evenly w-[70px] h-[30px] rounded-[30px] px-1 bg-[#EEEEEE]">
+          <button onClick={() => handleSub()}>-</button>
+          <span className="font-mont font-medium min-w-5 text-center">
+            {amount}
+          </span>
+          <button onClick={() => handleAdd()}>+</button>
+        </div>
       </div>
     </div>
   );

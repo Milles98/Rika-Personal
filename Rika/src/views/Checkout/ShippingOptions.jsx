@@ -35,6 +35,8 @@ const ShippingOptions = () => {
     }
   };
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
@@ -94,9 +96,25 @@ const ShippingOptions = () => {
       };
       setSelectedShippingDetails(shippingDetails);
       console.log("saved shipping details to context", shippingDetails);
+      const dropdownIds = ["postnord-select", "dhl-select", "instabox-select"];
+    dropdownIds.forEach((id) => {
+      if (id !== `${filterIndex.toLowerCase()}-select`) {
+        const dropdown = document.getElementById(id);
+        if (dropdown) {
+          dropdown.selectedIndex = 0; // Reset to default option
+          dropdown.options[0].text="-- Select a service point --";
+        }
+      }
+    });
       setSelectedLocation(null);
       setSelectedDeliveryOption(null);
       setIsConfirmed(true);
+      const servicePointSelected = document.getElementById(
+        `${filterIndex.toLowerCase()}-select`
+      );
+      if(servicePointSelected){
+        servicePointSelected.options[0].text=`${selectedLocation.name}, ${selectedDeliveryOption.serviceInformation.name}`;
+      }
     }
   };
 
@@ -128,7 +146,7 @@ const ShippingOptions = () => {
 
         {/* Submit Button */}
         <button
-          id="createButton"
+          id="showServicePoints"
           type="submit"
           className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
           disabled={loading}

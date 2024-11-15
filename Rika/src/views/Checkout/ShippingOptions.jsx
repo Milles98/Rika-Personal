@@ -99,7 +99,7 @@ const ShippingOptions = () => {
         if (id !== `${filterIndex.toLowerCase()}-select`) {
           const dropdown = document.getElementById(id);
           if (dropdown) {
-            dropdown.selectedIndex = 0; // Reset to default option
+            dropdown.selectedIndex = 0;
             dropdown.options[0].text = "-- Select a service point --";
           }
         }
@@ -116,20 +116,17 @@ const ShippingOptions = () => {
     }
   };
 
-  //Implement real navigation here
+  //Make sure this one is updated to correct page later when others have fixed their pages
   const navigateToPayment = () => {
     navigate("/paymentform");
   };
 
   return (
     <div className="min-h-screen bg-gray-300 p-4 flex flex-col items-center">
-      {/* Title Section with Back Arrow */}
       <div className="w-full max-w-md flex items-center mb-6">
-        {/* Back Arrow */}
         <div className="mr-4">
           <ArrowBack goBackTo="/products" />
         </div>
-        {/* Title */}
         <h2 className="text-xl sm:text-2xl text-gray-800 flex-grow text-center mr-14 mb-2">
           Shipping Options
         </h2>
@@ -318,19 +315,15 @@ const ShippingOptions = () => {
                   {transitTime
                     .filter((_, index) => {
                       if (filterIndex === "PostNord") {
-                        // Use explicit indices for PostNord
                         return [3, 5, 9].includes(index);
                       } else if (filterIndex === "DHL") {
-                        // DHL allows only index 8
                         return index === 8;
                       } else if (filterIndex === "Instabox") {
-                        // Instabox allows only index 8
                         return index === 8;
                       }
                       return false;
                     })
                     .map((time, index) => {
-                      // Explicitly assign fake prices based on the index
                       const prices = {
                         0: 349,
                         1: 249,
@@ -338,7 +331,7 @@ const ShippingOptions = () => {
                         3: 119,
                       };
 
-                      const price = prices[index] || 0; // Default to 0 kr if index not found
+                      const price = prices[index] || 0;
 
                       return (
                         <li
@@ -346,7 +339,7 @@ const ShippingOptions = () => {
                           onClick={() =>
                             handleDeliveryOption({
                               ...time,
-                              price, // Include price in the selected delivery option
+                              price,
                             })
                           }
                           className={`p-2 border rounded cursor-pointer shadow hover:bg-green-200 ${
